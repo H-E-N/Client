@@ -49,6 +49,7 @@
             this.btnLogin.TabIndex = 1;
             this.btnLogin.Text = "登录";
             this.btnLogin.UseVisualStyleBackColor = true;
+            this.btnLogin.Click += new System.EventHandler(this.btnLogin_Click);
             // 
             // btnOutLogin
             // 
@@ -58,6 +59,7 @@
             this.btnOutLogin.TabIndex = 2;
             this.btnOutLogin.Text = "注销";
             this.btnOutLogin.UseVisualStyleBackColor = true;
+            this.btnOutLogin.Click += new System.EventHandler(this.btnOutLogin_Click);
             // 
             // lbName
             // 
@@ -67,6 +69,7 @@
             this.lbName.Name = "lbName";
             this.lbName.Size = new System.Drawing.Size(617, 220);
             this.lbName.TabIndex = 3;
+            this.lbName.DoubleClick += new System.EventHandler(this.lbName_DoubleClick);
             // 
             // Directory
             // 

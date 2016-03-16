@@ -1,4 +1,6 @@
-﻿using System;
+﻿using BLL;
+using Model;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -35,6 +37,7 @@ namespace Communication
         {
             lbName.Text = "";
             btnOutLogin.Enabled = false;
+            ChatLogManager.CreatTableChatLog();
             Thread myThread = new Thread(ReceiveData);          //接收上下线信息
             myThread.IsBackground = true;
             myThread.Start();
@@ -216,7 +219,7 @@ namespace Communication
         private void Save(object message)
         {
             //ChatLog chat = Base.Decryption(message.ToString());
-            ChatLogService.InsertChatLog((ChatLog)message);
+            ChatLogManager.InsertChatLog((ChatLog)message);
         } 
         #endregion
 
@@ -233,6 +236,5 @@ namespace Communication
             Chat from1 = new Chat(str);
             from1.Show();
         }
-    }
     }
 }

@@ -30,6 +30,7 @@ namespace DAL
                     return cmd.ExecuteNonQuery();
                 }
             }
+
         }
         /// <summary>
         /// 查询(一次)
