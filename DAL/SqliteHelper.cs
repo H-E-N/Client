@@ -73,6 +73,23 @@ namespace DAL
             }
         }
         /// <summary>
+        /// 返回首行首列
+        /// </summary>
+        /// <param name="cmdType"></param>
+        /// <param name="cmdText"></param>
+        /// <param name="cmdParams"></param>
+        /// <returns></returns>
+        public static object ExcuteScalar(CommandType cmdType,string cmdText,params SQLiteParameter[] cmdParams)
+        {
+            SQLiteConnection conn = new SQLiteConnection(path);
+            using(SQLiteCommand cmd=conn.CreateCommand())
+            {
+                conn.Open();
+                PrepareCommand(cmd, null, cmdType, cmdText, cmdParams);
+                return cmd.ExecuteScalar();
+            }
+        }
+        /// <summary>
         /// cmd封装
         /// </summary>
         /// <param name="cmd">cmd</param>

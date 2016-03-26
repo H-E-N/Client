@@ -47,7 +47,7 @@ namespace Communication
         }
         #region 上下线
         /// <summary>
-        /// 发送上下线信息（本地）
+        /// 接收上下线信息（本地）
         /// </summary>
         private void ReceiveData()
         {
@@ -105,7 +105,7 @@ namespace Communication
                 while (b)
                 {
                     myudpClient.Send(bytes, bytes.Length, iep);
-                    Thread.Sleep(500);
+                    Thread.Sleep(2000);
                 }
             }
             catch (Exception err)
@@ -202,14 +202,16 @@ namespace Communication
             UdpClient u = (UdpClient)ar.AsyncState;
             IPEndPoint remote = null;
             byte[] bytes = u.EndReceive(ar, ref remote);
-            ChatLog chat = Base.DeSerialize<ChatLog>(bytes);
-            //string message = Encoding.UTF8.GetString(bytes, 0, bytes.Length);
 
-
-
+            string message = Encoding.UTF8.GetString(bytes, 0, bytes.Length);
             Thread TSave = new Thread(Save);
-            //TSave.Start(message);
-            TSave.Start(chat);
+            TSave.Start(message);
+
+            //ChatLog chat = Base.DeSerialize<ChatLog>(bytes);
+            //Thread TSave = new Thread(Save);
+            //TSave.Start(chat);
+
+            
             ReceviceData();
         }
         /// <summary>
@@ -218,8 +220,8 @@ namespace Communication
         /// <param name="message"></param>
         private void Save(object message)
         {
-            //ChatLog chat = Base.Decryption(message.ToString());
-            ChatLogManager.InsertChatLog((ChatLog)message);
+            ChatLog chat = Base.Decryption(message.ToString());
+            //ChatLogManager.InsertChatLog((ChatLog)message);
         } 
         #endregion
 
@@ -232,8 +234,7 @@ namespace Communication
         private void lbName_DoubleClick(object sender, EventArgs e)
         {
             string str = lbName.SelectedItem.ToString();
-            //Chat from1 = Chat.GetInstance(str);
-            Chat from1 = new Chat(str);
+            FChat from1 = new FChat(str);
             from1.Show();
         }
     }

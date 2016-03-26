@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Model
 {
+    [Serializable]
     public class User
     {
         private string ip;
@@ -28,6 +29,13 @@ namespace Model
         {
             get { return picture; }
             set { picture = value; }
+        }
+        private string signature;
+
+        public string Signature
+        {
+            get { return signature; }
+            set { signature = value; }
         }
     }
 }

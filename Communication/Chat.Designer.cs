@@ -28,93 +28,384 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.lbsend = new System.Windows.Forms.ListBox();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.txtIP = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.txtSend = new System.Windows.Forms.TextBox();
-            this.btnSend = new System.Windows.Forms.Button();
-            this.groupBox1.SuspendLayout();
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Chat));
+            this.skinPanel1 = new CCWin.SkinControl.SkinPanel();
+            this.pictureicon = new CCWin.SkinControl.SkinPictureBox();
+            this.lName = new CCWin.SkinControl.SkinLabel();
+            this.rtbMsg = new CCWin.SkinControl.RtfRichTextBox();
+            this.rtbSend = new CCWin.SkinControl.RtfRichTextBox();
+            this.fontDialog1 = new System.Windows.Forms.FontDialog();
+            this.skToolMenu = new CCWin.SkinControl.SkinToolStrip();
+            this.toolFont = new System.Windows.Forms.ToolStripButton();
+            this.toolCountenance = new System.Windows.Forms.ToolStripButton();
+            this.toolVibration = new System.Windows.Forms.ToolStripButton();
+            this.toolPicture = new System.Windows.Forms.ToolStripButton();
+            this.toolCut = new System.Windows.Forms.ToolStripButton();
+            this.btnSend = new CCWin.SkinControl.SkinButton();
+            this.btnClose = new CCWin.SkinControl.SkinButton();
+            this.skinToolStrip1 = new CCWin.SkinControl.SkinToolStrip();
+            this.toolFaceTime = new System.Windows.Forms.ToolStripButton();
+            this.toolVoice = new System.Windows.Forms.ToolStripButton();
+            this.toolFile = new System.Windows.Forms.ToolStripDropDownButton();
+            this.发送文件ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.发送文件夹ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.lSignature = new CCWin.SkinControl.SkinLabel();
+            this.skinPanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureicon)).BeginInit();
+            this.skToolMenu.SuspendLayout();
+            this.skinToolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // lbsend
+            // skinPanel1
             // 
-            this.lbsend.FormattingEnabled = true;
-            this.lbsend.ItemHeight = 12;
-            this.lbsend.Location = new System.Drawing.Point(6, 20);
-            this.lbsend.Name = "lbsend";
-            this.lbsend.Size = new System.Drawing.Size(523, 232);
-            this.lbsend.TabIndex = 0;
+            this.skinPanel1.BackColor = System.Drawing.Color.Transparent;
+            this.skinPanel1.Controls.Add(this.pictureicon);
+            this.skinPanel1.ControlState = CCWin.SkinClass.ControlState.Normal;
+            this.skinPanel1.DownBack = null;
+            this.skinPanel1.Location = new System.Drawing.Point(7, 7);
+            this.skinPanel1.MouseBack = null;
+            this.skinPanel1.Name = "skinPanel1";
+            this.skinPanel1.NormlBack = null;
+            this.skinPanel1.Size = new System.Drawing.Size(52, 49);
+            this.skinPanel1.TabIndex = 0;
             // 
-            // groupBox1
+            // pictureicon
             // 
-            this.groupBox1.Controls.Add(this.lbsend);
-            this.groupBox1.Location = new System.Drawing.Point(12, 12);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(535, 267);
-            this.groupBox1.TabIndex = 1;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "接收信息";
+            this.pictureicon.BackColor = System.Drawing.Color.Transparent;
+            this.pictureicon.Location = new System.Drawing.Point(3, 3);
+            this.pictureicon.Name = "pictureicon";
+            this.pictureicon.Size = new System.Drawing.Size(46, 43);
+            this.pictureicon.TabIndex = 9;
+            this.pictureicon.TabStop = false;
             // 
-            // label1
+            // lName
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(18, 299);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(41, 12);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "远程IP";
+            this.lName.AutoSize = true;
+            this.lName.BackColor = System.Drawing.Color.Transparent;
+            this.lName.BorderColor = System.Drawing.Color.White;
+            this.lName.Font = new System.Drawing.Font("微软雅黑", 14F);
+            this.lName.Location = new System.Drawing.Point(65, 9);
+            this.lName.Name = "lName";
+            this.lName.Size = new System.Drawing.Size(88, 25);
+            this.lName.TabIndex = 1;
+            this.lName.Text = "我的好友";
             // 
-            // txtIP
+            // rtbMsg
             // 
-            this.txtIP.Location = new System.Drawing.Point(66, 299);
-            this.txtIP.Name = "txtIP";
-            this.txtIP.Size = new System.Drawing.Size(100, 21);
-            this.txtIP.TabIndex = 3;
+            this.rtbMsg.HiglightColor = CCWin.SkinControl.RtfRichTextBox.RtfColor.White;
+            this.rtbMsg.Location = new System.Drawing.Point(12, 98);
+            this.rtbMsg.Name = "rtbMsg";
+            this.rtbMsg.Size = new System.Drawing.Size(534, 198);
+            this.rtbMsg.TabIndex = 3;
+            this.rtbMsg.Text = "";
+            this.rtbMsg.TextColor = CCWin.SkinControl.RtfRichTextBox.RtfColor.Black;
             // 
-            // label2
+            // rtbSend
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(200, 299);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(53, 12);
-            this.label2.TabIndex = 4;
-            this.label2.Text = "发送信息";
+            this.rtbSend.HiglightColor = CCWin.SkinControl.RtfRichTextBox.RtfColor.White;
+            this.rtbSend.Location = new System.Drawing.Point(12, 329);
+            this.rtbSend.Name = "rtbSend";
+            this.rtbSend.Size = new System.Drawing.Size(534, 146);
+            this.rtbSend.TabIndex = 4;
+            this.rtbSend.Text = "";
+            this.rtbSend.TextColor = CCWin.SkinControl.RtfRichTextBox.RtfColor.Black;
             // 
-            // txtSend
+            // skToolMenu
             // 
-            this.txtSend.Location = new System.Drawing.Point(262, 298);
-            this.txtSend.Name = "txtSend";
-            this.txtSend.Size = new System.Drawing.Size(100, 21);
-            this.txtSend.TabIndex = 5;
-            this.txtSend.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtSend_KeyPress);
+            this.skToolMenu.Arrow = System.Drawing.Color.Black;
+            this.skToolMenu.Back = System.Drawing.Color.White;
+            this.skToolMenu.BackColor = System.Drawing.Color.Transparent;
+            this.skToolMenu.BackRadius = 4;
+            this.skToolMenu.BackRectangle = new System.Drawing.Rectangle(10, 10, 10, 10);
+            this.skToolMenu.Base = System.Drawing.Color.Transparent;
+            this.skToolMenu.BaseFore = System.Drawing.Color.Black;
+            this.skToolMenu.BaseForeAnamorphosis = false;
+            this.skToolMenu.BaseForeAnamorphosisBorder = 4;
+            this.skToolMenu.BaseForeAnamorphosisColor = System.Drawing.Color.White;
+            this.skToolMenu.BaseForeOffset = new System.Drawing.Point(0, 0);
+            this.skToolMenu.BaseHoverFore = System.Drawing.Color.White;
+            this.skToolMenu.BaseItemAnamorphosis = true;
+            this.skToolMenu.BaseItemBorder = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(148)))), ((int)(((byte)(212)))));
+            this.skToolMenu.BaseItemBorderShow = true;
+            this.skToolMenu.BaseItemDown = ((System.Drawing.Image)(resources.GetObject("skToolMenu.BaseItemDown")));
+            this.skToolMenu.BaseItemHover = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(148)))), ((int)(((byte)(212)))));
+            this.skToolMenu.BaseItemMouse = ((System.Drawing.Image)(resources.GetObject("skToolMenu.BaseItemMouse")));
+            this.skToolMenu.BaseItemNorml = null;
+            this.skToolMenu.BaseItemPressed = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(148)))), ((int)(((byte)(212)))));
+            this.skToolMenu.BaseItemRadius = 4;
+            this.skToolMenu.BaseItemRadiusStyle = CCWin.SkinClass.RoundStyle.All;
+            this.skToolMenu.BaseItemSplitter = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(148)))), ((int)(((byte)(212)))));
+            this.skToolMenu.BindTabControl = null;
+            this.skToolMenu.Dock = System.Windows.Forms.DockStyle.None;
+            this.skToolMenu.DropDownImageSeparator = System.Drawing.Color.FromArgb(((int)(((byte)(197)))), ((int)(((byte)(197)))), ((int)(((byte)(197)))));
+            this.skToolMenu.Fore = System.Drawing.Color.Black;
+            this.skToolMenu.GripMargin = new System.Windows.Forms.Padding(2, 2, 4, 2);
+            this.skToolMenu.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this.skToolMenu.HoverFore = System.Drawing.Color.White;
+            this.skToolMenu.ItemAnamorphosis = true;
+            this.skToolMenu.ItemBorder = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(148)))), ((int)(((byte)(212)))));
+            this.skToolMenu.ItemBorderShow = true;
+            this.skToolMenu.ItemHover = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(148)))), ((int)(((byte)(212)))));
+            this.skToolMenu.ItemPressed = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(148)))), ((int)(((byte)(212)))));
+            this.skToolMenu.ItemRadius = 4;
+            this.skToolMenu.ItemRadiusStyle = CCWin.SkinClass.RoundStyle.All;
+            this.skToolMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolFont,
+            this.toolCountenance,
+            this.toolVibration,
+            this.toolPicture,
+            this.toolCut});
+            this.skToolMenu.Location = new System.Drawing.Point(14, 301);
+            this.skToolMenu.Name = "skToolMenu";
+            this.skToolMenu.RadiusStyle = CCWin.SkinClass.RoundStyle.All;
+            this.skToolMenu.Size = new System.Drawing.Size(153, 27);
+            this.skToolMenu.SkinAllColor = true;
+            this.skToolMenu.TabIndex = 8;
+            this.skToolMenu.Text = "skinToolStrip2";
+            this.skToolMenu.TitleAnamorphosis = true;
+            this.skToolMenu.TitleColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(228)))), ((int)(((byte)(236)))));
+            this.skToolMenu.TitleRadius = 4;
+            this.skToolMenu.TitleRadiusStyle = CCWin.SkinClass.RoundStyle.All;
+            // 
+            // toolFont
+            // 
+            this.toolFont.AutoSize = false;
+            this.toolFont.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolFont.Image = global::Communication.Properties.Resources.aio_quickbar_font;
+            this.toolFont.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.toolFont.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolFont.Name = "toolFont";
+            this.toolFont.Size = new System.Drawing.Size(23, 24);
+            this.toolFont.Text = "字体选择工具栏";
+            this.toolFont.Click += new System.EventHandler(this.toolFont_Click);
+            // 
+            // toolCountenance
+            // 
+            this.toolCountenance.AutoSize = false;
+            this.toolCountenance.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolCountenance.Image = global::Communication.Properties.Resources.aio_quickbar_face;
+            this.toolCountenance.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.toolCountenance.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolCountenance.Name = "toolCountenance";
+            this.toolCountenance.Size = new System.Drawing.Size(24, 24);
+            this.toolCountenance.Text = "表情选择工具栏";
+            this.toolCountenance.Click += new System.EventHandler(this.toolCountenance_Click);
+            // 
+            // toolVibration
+            // 
+            this.toolVibration.AutoSize = false;
+            this.toolVibration.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolVibration.Image = global::Communication.Properties.Resources.aio_quickbar_twitter;
+            this.toolVibration.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.toolVibration.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolVibration.Name = "toolVibration";
+            this.toolVibration.Size = new System.Drawing.Size(24, 24);
+            this.toolVibration.Text = "向你的好友发送震动";
+            this.toolVibration.Click += new System.EventHandler(this.toolVibration_Click);
+            // 
+            // toolPicture
+            // 
+            this.toolPicture.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolPicture.Image = global::Communication.Properties.Resources.aio_quickbar_sendpic;
+            this.toolPicture.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.toolPicture.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolPicture.Name = "toolPicture";
+            this.toolPicture.Size = new System.Drawing.Size(24, 24);
+            this.toolPicture.Text = "向你的好友发送图片";
+            this.toolPicture.Click += new System.EventHandler(this.toolPicture_Click);
+            // 
+            // toolCut
+            // 
+            this.toolCut.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolCut.Image = global::Communication.Properties.Resources.aio_quickbar_cut;
+            this.toolCut.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.toolCut.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolCut.Name = "toolCut";
+            this.toolCut.Size = new System.Drawing.Size(24, 24);
+            this.toolCut.Text = "截图";
+            this.toolCut.Click += new System.EventHandler(this.toolCut_Click);
             // 
             // btnSend
             // 
-            this.btnSend.Location = new System.Drawing.Point(404, 298);
+            this.btnSend.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSend.BackColor = System.Drawing.Color.Transparent;
+            this.btnSend.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(97)))), ((int)(((byte)(159)))), ((int)(((byte)(215)))));
+            this.btnSend.ControlState = CCWin.SkinClass.ControlState.Normal;
+            this.btnSend.DownBack = global::Communication.Properties.Resources.button_login_down;
+            this.btnSend.Location = new System.Drawing.Point(471, 484);
+            this.btnSend.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
+            this.btnSend.MouseBack = global::Communication.Properties.Resources.button_login_hover;
             this.btnSend.Name = "btnSend";
+            this.btnSend.NormlBack = global::Communication.Properties.Resources.button_login_normal;
             this.btnSend.Size = new System.Drawing.Size(75, 23);
             this.btnSend.TabIndex = 6;
-            this.btnSend.Text = "发送";
-            this.btnSend.UseVisualStyleBackColor = true;
+            this.btnSend.Text = "发送(&S)";
+            this.btnSend.UseVisualStyleBackColor = false;
             this.btnSend.Click += new System.EventHandler(this.btnSend_Click);
+            // 
+            // btnClose
+            // 
+            this.btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnClose.BackColor = System.Drawing.Color.Transparent;
+            this.btnClose.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(97)))), ((int)(((byte)(159)))), ((int)(((byte)(215)))));
+            this.btnClose.ControlState = CCWin.SkinClass.ControlState.Normal;
+            this.btnClose.DownBack = global::Communication.Properties.Resources.button_login_down;
+            this.btnClose.Location = new System.Drawing.Point(390, 484);
+            this.btnClose.MouseBack = global::Communication.Properties.Resources.button_login_normal;
+            this.btnClose.Name = "btnClose";
+            this.btnClose.NormlBack = global::Communication.Properties.Resources.button_login_normal;
+            this.btnClose.Size = new System.Drawing.Size(75, 23);
+            this.btnClose.TabIndex = 5;
+            this.btnClose.Text = "关闭(&C)";
+            this.btnClose.UseVisualStyleBackColor = false;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
+            // 
+            // skinToolStrip1
+            // 
+            this.skinToolStrip1.Arrow = System.Drawing.Color.Black;
+            this.skinToolStrip1.Back = System.Drawing.Color.White;
+            this.skinToolStrip1.BackRadius = 4;
+            this.skinToolStrip1.BackRectangle = new System.Drawing.Rectangle(10, 10, 10, 10);
+            this.skinToolStrip1.Base = System.Drawing.Color.Transparent;
+            this.skinToolStrip1.BaseFore = System.Drawing.Color.Black;
+            this.skinToolStrip1.BaseForeAnamorphosis = false;
+            this.skinToolStrip1.BaseForeAnamorphosisBorder = 4;
+            this.skinToolStrip1.BaseForeAnamorphosisColor = System.Drawing.Color.White;
+            this.skinToolStrip1.BaseForeOffset = new System.Drawing.Point(0, 0);
+            this.skinToolStrip1.BaseHoverFore = System.Drawing.Color.White;
+            this.skinToolStrip1.BaseItemAnamorphosis = true;
+            this.skinToolStrip1.BaseItemBorder = System.Drawing.Color.FromArgb(((int)(((byte)(93)))), ((int)(((byte)(93)))), ((int)(((byte)(93)))));
+            this.skinToolStrip1.BaseItemBorderShow = true;
+            this.skinToolStrip1.BaseItemDown = ((System.Drawing.Image)(resources.GetObject("skinToolStrip1.BaseItemDown")));
+            this.skinToolStrip1.BaseItemHover = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(148)))), ((int)(((byte)(212)))));
+            this.skinToolStrip1.BaseItemMouse = ((System.Drawing.Image)(resources.GetObject("skinToolStrip1.BaseItemMouse")));
+            this.skinToolStrip1.BaseItemNorml = null;
+            this.skinToolStrip1.BaseItemPressed = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(148)))), ((int)(((byte)(212)))));
+            this.skinToolStrip1.BaseItemRadius = 4;
+            this.skinToolStrip1.BaseItemRadiusStyle = CCWin.SkinClass.RoundStyle.All;
+            this.skinToolStrip1.BaseItemSplitter = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(148)))), ((int)(((byte)(212)))));
+            this.skinToolStrip1.BindTabControl = null;
+            this.skinToolStrip1.Dock = System.Windows.Forms.DockStyle.None;
+            this.skinToolStrip1.DropDownImageSeparator = System.Drawing.Color.FromArgb(((int)(((byte)(197)))), ((int)(((byte)(197)))), ((int)(((byte)(197)))));
+            this.skinToolStrip1.Fore = System.Drawing.Color.Black;
+            this.skinToolStrip1.GripMargin = new System.Windows.Forms.Padding(2, 2, 4, 2);
+            this.skinToolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this.skinToolStrip1.HoverFore = System.Drawing.Color.White;
+            this.skinToolStrip1.ItemAnamorphosis = true;
+            this.skinToolStrip1.ItemBorder = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(148)))), ((int)(((byte)(212)))));
+            this.skinToolStrip1.ItemBorderShow = true;
+            this.skinToolStrip1.ItemHover = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(148)))), ((int)(((byte)(212)))));
+            this.skinToolStrip1.ItemPressed = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(148)))), ((int)(((byte)(212)))));
+            this.skinToolStrip1.ItemRadius = 4;
+            this.skinToolStrip1.ItemRadiusStyle = CCWin.SkinClass.RoundStyle.All;
+            this.skinToolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolFaceTime,
+            this.toolVoice,
+            this.toolFile});
+            this.skinToolStrip1.Location = new System.Drawing.Point(7, 59);
+            this.skinToolStrip1.Name = "skinToolStrip1";
+            this.skinToolStrip1.RadiusStyle = CCWin.SkinClass.RoundStyle.All;
+            this.skinToolStrip1.Size = new System.Drawing.Size(144, 33);
+            this.skinToolStrip1.SkinAllColor = true;
+            this.skinToolStrip1.TabIndex = 2;
+            this.skinToolStrip1.Text = "skinToolStrip1";
+            this.skinToolStrip1.TitleAnamorphosis = true;
+            this.skinToolStrip1.TitleColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(228)))), ((int)(((byte)(236)))));
+            this.skinToolStrip1.TitleRadius = 4;
+            this.skinToolStrip1.TitleRadiusStyle = CCWin.SkinClass.RoundStyle.All;
+            // 
+            // toolFaceTime
+            // 
+            this.toolFaceTime.AutoSize = false;
+            this.toolFaceTime.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.toolFaceTime.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolFaceTime.Image = ((System.Drawing.Image)(resources.GetObject("toolFaceTime.Image")));
+            this.toolFaceTime.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.toolFaceTime.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolFaceTime.Margin = new System.Windows.Forms.Padding(5, 1, 0, 2);
+            this.toolFaceTime.Name = "toolFaceTime";
+            this.toolFaceTime.Size = new System.Drawing.Size(36, 28);
+            this.toolFaceTime.Text = "视频聊天";
+            // 
+            // toolVoice
+            // 
+            this.toolVoice.AutoSize = false;
+            this.toolVoice.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolVoice.Image = ((System.Drawing.Image)(resources.GetObject("toolVoice.Image")));
+            this.toolVoice.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.toolVoice.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolVoice.Margin = new System.Windows.Forms.Padding(5, 1, 0, 2);
+            this.toolVoice.Name = "toolVoice";
+            this.toolVoice.Size = new System.Drawing.Size(40, 28);
+            this.toolVoice.Text = "语音聊天";
+            // 
+            // toolFile
+            // 
+            this.toolFile.AutoSize = false;
+            this.toolFile.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.发送文件ToolStripMenuItem,
+            this.发送文件夹ToolStripMenuItem});
+            this.toolFile.Image = ((System.Drawing.Image)(resources.GetObject("toolFile.Image")));
+            this.toolFile.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.toolFile.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolFile.Margin = new System.Windows.Forms.Padding(5, 1, 0, 2);
+            this.toolFile.Name = "toolFile";
+            this.toolFile.Size = new System.Drawing.Size(50, 30);
+            this.toolFile.Text = "发送文件";
+            // 
+            // 发送文件ToolStripMenuItem
+            // 
+            this.发送文件ToolStripMenuItem.Name = "发送文件ToolStripMenuItem";
+            this.发送文件ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.发送文件ToolStripMenuItem.Text = "发送文件";
+            // 
+            // 发送文件夹ToolStripMenuItem
+            // 
+            this.发送文件夹ToolStripMenuItem.Name = "发送文件夹ToolStripMenuItem";
+            this.发送文件夹ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.发送文件夹ToolStripMenuItem.Text = "发送文件夹";
+            // 
+            // lSignature
+            // 
+            this.lSignature.AutoSize = true;
+            this.lSignature.BackColor = System.Drawing.Color.Transparent;
+            this.lSignature.BorderColor = System.Drawing.Color.White;
+            this.lSignature.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lSignature.Location = new System.Drawing.Point(67, 39);
+            this.lSignature.Name = "lSignature";
+            this.lSignature.Size = new System.Drawing.Size(0, 17);
+            this.lSignature.TabIndex = 9;
             // 
             // Chat
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(559, 360);
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(97)))), ((int)(((byte)(158)))), ((int)(((byte)(215)))));
+            this.ClientSize = new System.Drawing.Size(571, 514);
+            this.Controls.Add(this.lSignature);
+            this.Controls.Add(this.skToolMenu);
             this.Controls.Add(this.btnSend);
-            this.Controls.Add(this.txtSend);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.txtIP);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.btnClose);
+            this.Controls.Add(this.rtbSend);
+            this.Controls.Add(this.rtbMsg);
+            this.Controls.Add(this.skinToolStrip1);
+            this.Controls.Add(this.lName);
+            this.Controls.Add(this.skinPanel1);
+            this.EffectCaption = CCWin.TitleType.None;
+            this.ForeColor = System.Drawing.Color.Black;
             this.Name = "Chat";
+            this.ShowDrawIcon = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Chat";
             this.Load += new System.EventHandler(this.Chat_Load);
-            this.groupBox1.ResumeLayout(false);
+            this.skinPanel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureicon)).EndInit();
+            this.skToolMenu.ResumeLayout(false);
+            this.skToolMenu.PerformLayout();
+            this.skinToolStrip1.ResumeLayout(false);
+            this.skinToolStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -122,12 +413,26 @@
 
         #endregion
 
-        private System.Windows.Forms.ListBox lbsend;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox txtIP;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox txtSend;
-        private System.Windows.Forms.Button btnSend;
+        private CCWin.SkinControl.SkinPanel skinPanel1;
+        private CCWin.SkinControl.SkinLabel lName;
+        private CCWin.SkinControl.SkinToolStrip skinToolStrip1;
+        private System.Windows.Forms.ToolStripButton toolFaceTime;
+        private System.Windows.Forms.ToolStripButton toolVoice;
+        private System.Windows.Forms.ToolStripDropDownButton toolFile;
+        private CCWin.SkinControl.RtfRichTextBox rtbMsg;
+        private CCWin.SkinControl.SkinButton btnClose;
+        private CCWin.SkinControl.SkinButton btnSend;
+        private CCWin.SkinControl.SkinPictureBox pictureicon;
+        private System.Windows.Forms.ToolStripMenuItem 发送文件ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 发送文件夹ToolStripMenuItem;
+        private CCWin.SkinControl.SkinToolStrip skToolMenu;
+        private System.Windows.Forms.ToolStripButton toolFont;
+        private System.Windows.Forms.ToolStripButton toolCountenance;
+        private System.Windows.Forms.ToolStripButton toolVibration;
+        private System.Windows.Forms.ToolStripButton toolPicture;
+        private System.Windows.Forms.ToolStripButton toolCut;
+        private System.Windows.Forms.FontDialog fontDialog1;
+        public CCWin.SkinControl.RtfRichTextBox rtbSend;
+        private CCWin.SkinControl.SkinLabel lSignature;
     }
 }

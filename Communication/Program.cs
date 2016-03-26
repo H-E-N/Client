@@ -16,7 +16,7 @@ namespace Communication
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Directory());
+            Application.Run(new Client());
         }
     }
 }

@@ -16,7 +16,7 @@ namespace DAL
         /// </summary>
         public static void CreatTableChatLog()
         {
-            string creatTable = "CREATE TABLE IF NOT EXISTS ChatLog(id INTEGER PRIMARY KEY AUTOINCREMENT, Sender varchar(20), Receiver varchar(20),Time varchar(20),Data varchar(100));";//建表语句
+            string creatTable = "CREATE TABLE IF NOT EXISTS ChatLog(id INTEGER PRIMARY KEY AUTOINCREMENT, Sender varchar(20), Receiver varchar(20),Time varchar(20),Data varchar(1000));";//建表语句
             SqliteHelper.ExecuteNonQuery(CommandType.Text, creatTable, null);
         }
         /// <summary>

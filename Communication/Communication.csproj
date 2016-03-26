@@ -50,6 +50,10 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CSkin, Version=10.23.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>.\CSkin.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -68,19 +72,37 @@
     <Compile Include="Chat.Designer.cs">
       <DependentUpon>Chat.cs</DependentUpon>
     </Compile>
-    <Compile Include="Directory.cs">
+    <Compile Include="Countenance.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Directory.Designer.cs">
-      <DependentUpon>Directory.cs</DependentUpon>
+    <Compile Include="Countenance.Designer.cs">
+      <DependentUpon>Countenance.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Client.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Client.Designer.cs">
+      <DependentUpon>Client.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Information.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Information.Designer.cs">
+      <DependentUpon>Information.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Chat.resx">
       <DependentUpon>Chat.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Directory.resx">
-      <DependentUpon>Directory.cs</DependentUpon>
+    <EmbeddedResource Include="Countenance.resx">
+      <DependentUpon>Countenance.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Client.resx">
+      <DependentUpon>Client.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Information.resx">
+      <DependentUpon>Information.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -90,6 +112,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="app.manifest" />
     <None Include="Properties\Settings.settings">
@@ -116,6 +139,156 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="CSkin.XML">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Head\1.png" />
+    <Content Include="Head\10.png" />
+    <Content Include="Head\2.png" />
+    <Content Include="Head\3.png" />
+    <Content Include="Head\4.png" />
+    <Content Include="Head\5.png" />
+    <Content Include="Head\6.png" />
+    <Content Include="Head\7.png" />
+    <Content Include="Head\8.png" />
+    <Content Include="Head\9.png" />
+    <None Include="Resources\1_100.gif" />
+    <None Include="Resources\afternoon.jpg" />
+    <None Include="Resources\aio_head_normal.png" />
+    <None Include="Resources\aio_quickbar_cut.png" />
+    <None Include="Resources\aio_quickbar_face.png" />
+    <None Include="Resources\aio_quickbar_flirtationface.png" />
+    <None Include="Resources\aio_quickbar_font.png" />
+    <None Include="Resources\aio_quickbar_inputassist.png" />
+    <None Include="Resources\aio_quickbar_more.png" />
+    <None Include="Resources\aio_quickbar_register.png" />
+    <None Include="Resources\aio_quickbar_richface.png" />
+    <None Include="Resources\aio_quickbar_screen1.png" />
+    <None Include="Resources\aio_quickbar_screen2.png" />
+    <None Include="Resources\aio_quickbar_sendpic.png" />
+    <None Include="Resources\aio_quickbar_twitter.png" />
+    <None Include="Resources\AIO_SetBtn_down.png" />
+    <None Include="Resources\AIO_SetBtn_highlight.png" />
+    <None Include="Resources\AIO_SetBtn_highlight_normal.png" />
+    <None Include="Resources\AIO_SetBtn_normal.png" />
+    <None Include="Resources\all_inside_bkg.png" />
+    <None Include="Resources\allbtn_down.png" />
+    <None Include="Resources\allbtn_highlight.png" />
+    <None Include="Resources\away %282%29.png" />
+    <None Include="Resources\BackPalace.png" />
+    <None Include="Resources\BackPalace2.png" />
+    <None Include="Resources\Big_1.png" />
+    <None Include="Resources\Big_2.png" />
+    <None Include="Resources\Big_3.png" />
+    <None Include="Resources\Big_4.png" />
+    <None Include="Resources\Big_5.png" />
+    <None Include="Resources\Big_6.png" />
+    <None Include="Resources\Big_7.png" />
+    <None Include="Resources\Big_8.png" />
+    <None Include="Resources\Big_9.png" />
+    <None Include="Resources\Big_10.png" />
+    <None Include="Resources\btn_close_disable.png" />
+    <None Include="Resources\btn_close_down.png" />
+    <None Include="Resources\btn_close_highlight.png" />
+    <None Include="Resources\btn_max_down.png" />
+    <None Include="Resources\btn_max_highlight.png" />
+    <None Include="Resources\btn_max_normal.png" />
+    <None Include="Resources\btn_mini_down.png" />
+    <None Include="Resources\btn_mini_highlight.png" />
+    <None Include="Resources\btn_mini_normal.png" />
+    <None Include="Resources\btn_restore_down.png" />
+    <None Include="Resources\btn_restore_highlight.png" />
+    <None Include="Resources\btn_restore_normal.png" />
+    <None Include="Resources\btn_set_hover.png" />
+    <None Include="Resources\btn_set_normal.png" />
+    <None Include="Resources\btn_set_press.png" />
+    <None Include="Resources\btn_Skin_down.png" />
+    <None Include="Resources\btn_Skin_highlight.png" />
+    <None Include="Resources\btn_Skin_normal.png" />
+    <None Include="Resources\busy %282%29.png" />
+    <None Include="Resources\button_login_down.png" />
+    <None Include="Resources\button_login_hover.png" />
+    <None Include="Resources\button_login_normal.png" />
+    <None Include="Resources\checkbox_hightlight.png" />
+    <None Include="Resources\checkbox_normal.png" />
+    <None Include="Resources\checkbox_pushed.png" />
+    <None Include="Resources\checkbox_tick_highlight.png" />
+    <None Include="Resources\checkbox_tick_normal.png" />
+    <None Include="Resources\checkbox_tick_pushed.png" />
+    <None Include="Resources\corner_back.png" />
+    <None Include="Resources\corner_back_hover.png" />
+    <None Include="Resources\corner_back_press.png" />
+    <None Include="Resources\corner_left.png" />
+    <None Include="Resources\corner_left_hover.png" />
+    <None Include="Resources\corner_left_press.png" />
+    <None Include="Resources\corner_right.png" />
+    <None Include="Resources\corner_right_hover.png" />
+    <None Include="Resources\corner_right_press.png" />
+    <None Include="Resources\duozhanghao1.png" />
+    <None Include="Resources\duozhanghao2.png" />
+    <None Include="Resources\duozhanghao3.png" />
+    <None Include="Resources\duozhanghao4.png" />
+    <None Include="Resources\duozhanghao5.png" />
+    <None Include="Resources\duozhanghao6.png" />
+    <None Include="Resources\facetime.png" />
+    <None Include="Resources\file.png" />
+    <None Include="Resources\frameBorderEffect_mouseDownDraw.png" />
+    <None Include="Resources\frameBorderEffect_normalDraw.png" />
+    <None Include="Resources\Full_close_down.PNG" />
+    <None Include="Resources\Full_close_hover.PNG" />
+    <None Include="Resources\Full_close_normal.PNG" />
+    <None Include="Resources\icon_close_down.png" />
+    <None Include="Resources\icon_close_hover.png" />
+    <None Include="Resources\icon_close_normal.png" />
+    <None Include="Resources\imgRjp.BackgroundImage.png" />
+    <None Include="Resources\imoffline %282%29.png" />
+    <None Include="Resources\imonline %282%29.png" />
+    <None Include="Resources\inputbox.png" />
+    <None Include="Resources\inputbox_hover.png" />
+    <None Include="Resources\invisible %282%29.png" />
+    <None Include="Resources\login_inputbtn_down.png" />
+    <None Include="Resources\login_inputbtn_highlight.png" />
+    <None Include="Resources\login_inputbtn_normal.png" />
+    <None Include="Resources\main_1.jpg" />
+    <None Include="Resources\main_2.jpg" />
+    <None Include="Resources\main_3.jpg" />
+    <None Include="Resources\main_4.jpg" />
+    <None Include="Resources\main_5.jpg" />
+    <None Include="Resources\main_6.jpg" />
+    <None Include="Resources\main_7.jpg" />
+    <None Include="Resources\main_8.jpg" />
+    <None Include="Resources\main_9.jpg" />
+    <None Include="Resources\main_10.jpg" />
+    <None Include="Resources\menu_btn_highlight.png" />
+    <None Include="Resources\menu_btn_normal.png" />
+    <None Include="Resources\menu_check.png" />
+    <None Include="Resources\mima.png" />
+    <None Include="Resources\mima_hover.png" />
+    <None Include="Resources\mima_press.png" />
+    <None Include="Resources\morning.jpg" />
+    <None Include="Resources\mute %282%29.png" />
+    <None Include="Resources\night.jpg" />
+    <None Include="Resources\noon.jpg" />
+    <None Include="Resources\Norml.png" />
+    <None Include="Resources\pictureBox1.Image.png" />
+    <None Include="Resources\Qme %282%29.png" />
+    <None Include="Resources\set_icon.png" />
+    <None Include="Resources\Small_1.png" />
+    <None Include="Resources\Small_2.png" />
+    <None Include="Resources\Small_3.png" />
+    <None Include="Resources\Small_4.png" />
+    <None Include="Resources\Small_5.png" />
+    <None Include="Resources\Small_6.png" />
+    <None Include="Resources\Small_7.png" />
+    <None Include="Resources\Small_8.png" />
+    <None Include="Resources\Small_9.png" />
+    <None Include="Resources\Small_10.png" />
+    <None Include="Resources\spin_normal_down.png" />
+    <None Include="Resources\texture.png" />
+    <None Include="Resources\texture2.png" />
+    <None Include="Resources\ToolbarBtnDown.png" />
+    <None Include="Resources\ToolbarBtnNormal.png" />
+    <None Include="Resources\voice.png" />
     <Content Include="x64\SQLite.Interop.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
