@@ -1,5 +1,6 @@
 ﻿using CCWin.SkinControl;
 using CCWin.Win32;
+using CCWin.Win32.Const;
 using DAL;
 using Model;
 using System;
@@ -21,7 +22,8 @@ namespace BLL
         private ChatListItem listItem;
         private int port = 8001;
         private UdpClient udpclient;
-
+        List<UdpPacket> udpPackets = new List<UdpPacket>();
+        int number = 0;
         [DllImport("user32.dll ", EntryPoint = "SendMessage")]
         public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, ref COPYDATASTRUCT lParam);
 
@@ -43,21 +45,44 @@ namespace BLL
             chat.Items.Add(listItem);
             AddFriend();
         }
+        public ClientManager()
+        {
+            CreateTableUsers();
+        }
         /// <summary>
         /// 创建Users表
         /// </summary>
         private void CreateTableUsers()
         {
             ClientService.CreateTableUsers();
-            if (ClientService.GetUser(Base.GetAddressIP()) == null)
+            if (ClientService.GetUserByIP(Base.GetAddressIP()) == null)
             {
                 User user = new User();
                 user.IP = Base.GetAddressIP();
                 user.Name = "Administrator";
-                user.Picture = "#";
-                user.Signature = "";
+                Image img = Image.FromFile("head/4.png");
+                user.Picture = Base.ChangeToBytes(img);
+                user.Signature = " ";
                 ClientService.InsertUser(user);
             }
+        }
+        /// <summary>
+        /// 通过IP获取用户信息
+        /// </summary>
+        /// <param name="ip"></param>
+        /// <returns></returns>
+        public User GetUserByIP(string ip)
+        {
+            CreateTableUsers();
+            return ClientService.GetUserByIP(ip);
+        }
+        /// <summary>
+        /// 更新个人资料
+        /// </summary>
+        /// <param name="user"></param>
+        public void UpdateUser(User user)
+        {
+            ClientService.UpdateUser(user);
         }
         /// <summary>
         /// 添加好友
@@ -69,14 +94,15 @@ namespace BLL
             {
                 for (int i = 0; i < userlist.Count; i++)
                 {
-                    ChatListSubItem subItem = new ChatListSubItem(userlist[i].IP, userlist[i].Name, userlist[i].Picture);
-                    subItem.HeadImage = Image.FromFile("head/4.png");
+                    ChatListSubItem subItem = new ChatListSubItem(userlist[i].IP, userlist[i].Name, userlist[i].Signature);
+                    subItem.HeadImage = Base.ChageToImage(userlist[i].Picture);
                     subItem.IpAddress = userlist[i].IP;
                     if (userlist[i].IP != Base.GetAddressIP())
                         subItem.HeadImage = subItem.GetDarkImage();
                     listItem.SubItems.Add(subItem);
                 }
             }
+            //chat.SendToBack();
         }
 
         /// <summary>
@@ -95,82 +121,127 @@ namespace BLL
         {
             UdpClient u = (UdpClient)ar.AsyncState;
             IPEndPoint remote = null;
-            byte[] bytes = u.EndReceive(ar, ref remote);
+            byte[] udpPacketbytes = u.EndReceive(ar, ref remote);
+            UdpPacket udpPacketDate = Base.DeSerialize<UdpPacket>(udpPacketbytes);
 
-
-            byte[] msgHead = new byte[12], msgBody = new byte[bytes.Length - 12];
-            Buffer.BlockCopy(bytes, 0, msgHead, 0, 12);
-            Buffer.BlockCopy(bytes, 12, msgBody, 0, bytes.Length - 12);
-            string keyword = Encoding.Unicode.GetString(msgHead);
-            switch (keyword)
+            if (udpPacketDate.Total - 1 <= number)
             {
+                udpPackets.Add(udpPacketDate);
+                byte[] bytes = Base.CopyDataUdpPacket(udpPackets);
+                udpPackets.Clear();
+                number = 0;
+                ManageMsg(bytes);
+            }
+            else
+            {
+                udpPackets.Add(udpPacketDate);
+                number++;
+            }
+            ReceviceData();
+        }
+        private void ManageMsg(byte[] bytes)
+        {
+            try
+            {
+                byte[] msgHead = new byte[12], msgBody = new byte[bytes.Length - 12];
+                Buffer.BlockCopy(bytes, 0, msgHead, 0, 12);
+                Buffer.BlockCopy(bytes, 12, msgBody, 0, bytes.Length - 12);
+                string keyword = Encoding.Unicode.GetString(msgHead);
+                switch (keyword)
+                {
                     /*
                      * 用户上线时广播上线信息,收到这个消息将对方加入到联系人中，并返回自己在线信息
                      */
-                case "User::":
-                    {
-                        try
+                    case "User::":
                         {
-                            User user = Base.DeSerialize<User>(msgBody);
-                            Thread TSave = new Thread(LoginUser);
-                            TSave.IsBackground = true;
-                            TSave.Start(user);
+                            try
+                            {
+                                User user = Base.DeSerialize<User>(msgBody);
+                                Thread TSave = new Thread(LoginUser);
+                                TSave.IsBackground = true;
+                                TSave.Start(user);
+                            }
+                            catch (Exception)
+                            {
+                            }
+                            break;
+                            /*
+                             * 收到对方在线信息，将对方加入到联系人中
+                             */
                         }
-                        catch (Exception)
+                    case "REPY::":
                         {
+                            try
+                            {
+                                User user = Base.DeSerialize<User>(msgBody);
+                                Thread TSave = new Thread(RepyUser);
+                                TSave.IsBackground = true;
+                                TSave.Start(user);
+                            }
+                            catch (Exception)
+                            { }
+                            break;
                         }
-                        break;
-                    /*
-                     * 收到对方在线信息，将对方加入到联系人中
-                     */
-                    }
-                case "REPY::":
-                    {
-                        try
-                        {
-                            User user = Base.DeSerialize<User>(msgBody);
-                            Thread TSave = new Thread(RepyUser);
-                            TSave.IsBackground = true;
-                            TSave.Start(user);
-                        }
-                        catch (Exception)
-                        { }
-                        break;
-                    }
                     /*
                      * 接收到信息后保存到数据库（声音提醒）
                      */
-                case "MESG::":
-                    {
-                        try
+                    case "MESG::":
                         {
-                            string message = Encoding.Unicode.GetString(msgBody, 0, msgBody.Length);
-                            Thread TSave = new Thread(SaveChatLog);
-                            TSave.IsBackground = true;
-                            TSave.Start(message);
+                            try
+                            {
+                                string message = Encoding.Unicode.GetString(msgBody, 0, msgBody.Length);
+                                Thread TSave = new Thread(SaveChatLog);
+                                TSave.IsBackground = true;
+                                TSave.Start(message);
+                            }
+                            catch { }
+                            break;
                         }
-                        catch { }
-                        break;
-                    }
                     /*
                      * 接收到退出广播，头像变黑
                      */
-                case "QUIT::":
-                    {
-                        try
+                    case "QUIT::":
                         {
-                            User user = Base.DeSerialize<User>(msgBody);
-                            Thread TSave = new Thread(QuitUser);
-                            TSave.IsBackground = true;
-                            TSave.Start(user);
+                            try
+                            {
+                                User user = Base.DeSerialize<User>(msgBody);
+                                Thread TSave = new Thread(QuitUser);
+                                TSave.IsBackground = true;
+                                TSave.Start(user);
+                            }
+                            catch { }
+                            break;
                         }
-                        catch { }
-                        break;
-                    }
+                    case "FILE::":
+                        {
+                            try
+                            {
+                                string message = Encoding.Unicode.GetString(msgBody, 0, msgBody.Length);
+                                Thread TSave = new Thread(SaveFile);
+                                TSave.IsBackground = true;
+                                TSave.Start(message);
+                            }
+                            catch { }
+                            break;
+                        }
+                    case "ACEP::":
+                        {
+                            try
+                            {
+                                string message = Encoding.Unicode.GetString(msgBody, 0, msgBody.Length);
+                                Thread TSave = new Thread(SendFile);
+                                TSave.IsBackground = true;
+                                TSave.Start(message);
+                            }
+                            catch { }
+                            break;
+                        }
+                }
             }
-
-
-            ReceviceData();
+            catch(Exception e)
+            {
+                Base.WriteLog(e.Message);
+            }
         }
         /// <summary>
         /// 保存数据到数据库中,并添加到联系人,并返回信息
@@ -182,12 +253,12 @@ namespace BLL
             if (user.IP != Base.GetAddressIP())
             {
                 ChatListSubItem subItem = new ChatListSubItem(user.IP, user.Name, user.Signature);
-                subItem.HeadImage = Image.FromFile("head/4.png");
+                subItem.HeadImage = Base.ChageToImage(user.Picture);
                 subItem.IpAddress = user.IP;
                 if (chat.GetSubItemsByIp(user.IP).Length > 0)
                 {
                     chat.GetSubItemsByIp(user.IP)[0] = subItem;
-                    chat.GetSubItemsByIp(user.IP)[0].HeadImage = Image.FromFile("head/4.png");
+                    UpdateUser(user);
                 }
                 else
                 {
@@ -195,7 +266,7 @@ namespace BLL
                     listItem.SubItems.Add(subItem);
                 }
                 BoardCast bc = new BoardCast();
-                //Thread.Sleep(500);
+                Thread.Sleep(200);
                 bc.BCReply(user.IP);
             }
         }
@@ -209,11 +280,12 @@ namespace BLL
             if (user.IP != Base.GetAddressIP())
             {
                 ChatListSubItem subItem = new ChatListSubItem(user.IP, user.Name, user.Signature);
-                subItem.HeadImage = Image.FromFile("head/3.png");
+                subItem.HeadImage = Base.ChageToImage(user.Picture);
                 subItem.IpAddress = user.IP;
                 if (chat.GetSubItemsByIp(user.IP).Length > 0)
                 {
                     chat.GetSubItemsByIp(user.IP)[0] = subItem;
+                    UpdateUser(user);
                 }
                 else
                 {
@@ -228,8 +300,8 @@ namespace BLL
         /// <param name="message"></param>
         private void SaveChatLog(object message)
         {
-            ChatLog chat = Base.Decryption(message.ToString());
-            User user=ClientService.GetUser(chat.Sender);
+            ChatLog chatlog = Base.Decryption(message.ToString());
+            User user = ClientService.GetUserByIP(chatlog.Sender);
             string windowsName = "与 " + user.Name + " 对话中";
             IntPtr handle = NativeMethods.FindWindow(null, windowsName);
 
@@ -248,17 +320,22 @@ namespace BLL
             }
             else
             {
-                Information
+                chat.GetSubItemsByIp(chatlog.Sender)[0].IsTwinkle = true;
+                Information info = new Information(chatlog);
+                //info.Text = "提示";
+                //Information info = new Information();
+                info.Show();
                 //FrmChat formRMsg = new FrmChat(msgIP, msgFrom, msgID, msgDetail);
                 //formRMsg.Text = "与 " + msgFrom + " 对话中";
                 //formRMsg.WindowState = FormWindowState.Minimized;
                 //formRMsg.ShowDialog();
                 //formRMsg.Show();
                 //formRMsg.WindowState = FormWindowState.Minimized;
-                //IntPtr newHandle = FindWindow(null, formRMsg.Text);                
-                //FlashWindow(newHandle, true);
+                //IntPtr newHandle = NativeMethods.FindWindow(null, info.Text);
+
+                //NativeMethods.FlashWindow(newHandle, true);
             }
-            ChatLogService.InsertChatLog(chat);
+            ChatLogService.InsertChatLog(chatlog);
         }
         /// <summary>
         /// 用户退出
@@ -274,6 +351,54 @@ namespace BLL
                     chat.GetSubItemsByIp(user.IP)[0].HeadImage = chat.GetSubItemsByIp(user.IP)[0].GetDarkImage();
                 }
             }
+        }
+        /// <summary>
+        /// 收到接收图片请求
+        /// </summary>
+        /// <param name="message"></param>
+        public void SaveFile(object message)
+        {
+            ChatLog chatlog = Base.Decryption(message.ToString());
+            User user = ClientService.GetUserByIP(chatlog.Sender);
+            string windowsName = "与 " + user.Name + " 对话中";
+            IntPtr handle = NativeMethods.FindWindow(null, windowsName);
+
+            if (handle != IntPtr.Zero)
+            {
+                //对要发送的数据进行封装，直接发string类型，收到会出错
+                byte[] sarr = Encoding.Default.GetBytes(message.ToString());
+                int len = sarr.Length;
+                COPYDATASTRUCT cds;
+                cds.dwData = (IntPtr)100;
+                cds.lpData = message.ToString();
+                cds.cbData = len + 1;
+
+                SendMessage(handle, WM_COPYDATA, 0, ref cds);
+                NativeMethods.FlashWindow(handle, true);
+            }
+            else
+            {
+                chat.GetSubItemsByIp(chatlog.Sender)[0].IsTwinkle = true;
+                //FrmChat formRMsg = new FrmChat(msgIP, msgFrom, msgID, msgDetail);
+                //formRMsg.Text = "与 " + msgFrom + " 对话中";
+                //formRMsg.WindowState = FormWindowState.Minimized;
+                //formRMsg.ShowDialog();
+                //formRMsg.Show();
+                //formRMsg.WindowState = FormWindowState.Minimized;
+                //IntPtr newHandle = FindWindow(null, formRMsg.Text);                
+                //FlashWindow(newHandle, true);
+            }
+        }
+        /// <summary>
+        /// 发送图片
+        /// </summary>
+        /// <param name="message"></param>
+        public void SendFile(object message)
+        {
+            ChatLog chatlog = Base.Decryption(message.ToString());
+            chatlog.Data = Base.AESDecryption(chatlog.Data);
+            FileManager sendfileManager = new FileManager(chatlog.Data, chatlog.Sender);
+            sendfileManager.TCPSendFile();
         }
     }
 }

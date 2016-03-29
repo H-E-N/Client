@@ -23,9 +23,16 @@ namespace Model
             get { return name; }
             set { name = value; }
         }
-        private string picture;
+        //private string picture;
 
-        public string Picture
+        //public string Picture
+        //{
+        //    get { return picture; }
+        //    set { picture = value; }
+        //}
+        private byte[] picture;
+
+        public byte[] Picture
         {
             get { return picture; }
             set { picture = value; }

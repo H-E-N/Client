@@ -18,7 +18,8 @@ namespace BLL
         {
             user = new User();
             user.IP = Base.GetAddressIP();
-            user = ClientService.GetUser(user.IP);
+            ClientManager clientManager = new ClientManager();
+            user = clientManager.GetUserByIP(user.IP);
         }
         /// <summary>
         /// 收到上线通知后的回复
@@ -27,13 +28,13 @@ namespace BLL
         public void BCReply(string ipReply)
         {
             IPAddress remoteIP;
-            if(IPAddress.TryParse(ipReply,out remoteIP)==false)
-            {}
+            if (IPAddress.TryParse(ipReply, out remoteIP) == false)
+            { }
             else
             {
                 IPEndPoint iep = new IPEndPoint(remoteIP, port);
                 byte[] bytes = Base.Serialize<User>(user);
-                bytes=CopyTOByte("REPY::",bytes);
+                bytes = CopyTOByte("REPY::", bytes);
                 SendBoardCast(iep, bytes);
             }
         }
@@ -62,10 +63,32 @@ namespace BLL
         /// </summary>
         /// <param name="iep"></param>
         /// <param name="message"></param>
-        public void SendMsg(IPEndPoint iep,string message)
+        public void SendMsg(IPEndPoint iep, string message)
         {
-            byte[] bytes=Encoding.Unicode.GetBytes(message);
-            bytes=CopyTOByte("MESG::",bytes);
+            byte[] bytes = Encoding.Unicode.GetBytes(message);
+            bytes = CopyTOByte("MESG::", bytes);
+            SendBoardCast(iep, bytes);
+        }
+        /// <summary>
+        /// 发送文件
+        /// </summary>
+        /// <param name="iep"></param>
+        /// <param name="message"></param>
+        public void SendFile(IPEndPoint iep, string message)
+        {
+            byte[] bytes = Encoding.Unicode.GetBytes(message);
+            bytes = CopyTOByte("FILE::", bytes);
+            SendBoardCast(iep, bytes);
+        }
+        /// <summary>
+        /// 接收文件
+        /// </summary>
+        /// <param name="iep"></param>
+        /// <param name="message"></param>
+        public void ReceviceFile(IPEndPoint iep, string message)
+        {
+            byte[] bytes = Encoding.Unicode.GetBytes(message);
+            bytes = CopyTOByte("ACEP::", bytes);
             SendBoardCast(iep, bytes);
         }
         /// <summary>
@@ -73,12 +96,20 @@ namespace BLL
         /// </summary>
         /// <param name="iep"></param>
         /// <param name="bytes"></param>
-        private void SendBoardCast(IPEndPoint iep,byte[] bytes)
+        private void SendBoardCast(IPEndPoint iep, byte[] bytes)
         {
-            UdpClient udpclient = new UdpClient();
+            
             try
             {
-                IAsyncResult ar = udpclient.BeginSend(bytes, bytes.Length, iep, SendCallback, udpclient);
+                Random random=new Random();
+                long sequence = (long)Math.Floor( random.NextDouble()*1000000000D);
+                ICollection<UdpPacket> udpPackets = Base.Split(sequence, bytes,51200);
+                foreach(UdpPacket udpPacket in udpPackets)
+                {
+                    UdpClient udpclient = new UdpClient();
+                    byte[] udpPacketData = Base.Serialize<UdpPacket>(udpPacket);
+                    IAsyncResult ar = udpclient.BeginSend(udpPacketData, udpPacketData.Length, iep, SendCallback, udpclient);
+                }
             }
             catch { }
         }
@@ -92,7 +123,7 @@ namespace BLL
             udpclient.EndSend(ar);
             udpclient.Close();
         }
-        private byte[] CopyTOByte(string str,byte[]bytes)
+        private byte[] CopyTOByte(string str, byte[] bytes)
         {
             byte[] strByte = Encoding.Unicode.GetBytes(str);
             List<byte> bytelist = new List<byte>();
@@ -102,5 +133,6 @@ namespace BLL
             bytelist.CopyTo(bytes);
             return bytes;
         }
+
     }
 }

@@ -44,12 +44,11 @@ namespace DAL
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="receiver"></param>
-        /// <param name="id"></param>
         /// <returns></returns>
-        public static List<ChatLog> GetChatlog(string sender, string receiver, ref int id)
+        public static List<ChatLog> GetChatlogs(string sender, string receiver)
         {
             CreatTableChatLog();
-            string sql = String.Format("SELECT * FROM ChatLog where ((sender = '{0}' and receiver ='{1}') or (sender = '{1}' and receiver ='{0}')) and id > {2}", sender, receiver, id);
+            string sql = String.Format("SELECT * FROM ChatLog where (sender = '{0}' and receiver ='{1}') or (sender = '{1}' and receiver ='{0}')", sender, receiver);
             DataTable dt = null;
             dt = SqliteHelper.ExcuteDataTable(CommandType.Text, sql, null);
             List<ChatLog> chatloglist = new List<ChatLog>();
@@ -59,31 +58,8 @@ namespace DAL
                 {
                     chatloglist.Add(EntryToChatLog(dt.Rows[i]));
                 }
-                id = Convert.ToInt32(dt.Rows[dt.Rows.Count - 1]["id"]);
             }
             return chatloglist;
-        }
-        public static List<ChatLog> GetChatlogs(string sender, string receiver, ref int id)
-        {
-            CreatTableChatLog();
-            string sql = String.Format("SELECT * FROM ChatLog where ((sender = '{0}' and receiver ='{1}') or (sender = '{1}' and receiver ='{0}')) and id > {2}", sender, receiver, id);
-            SQLiteDataReader dr = null;
-            dr = SqliteHelper.ExcuteDataReader(CommandType.Text, sql, null);
-            List<ChatLog> chatloglist = new List<ChatLog>();
-            while (dr.Read())
-            {
-                chatloglist.Add(EntryToChatLog(dr));
-            }
-            return chatloglist;
-        }
-        private static ChatLog EntryToChatLog(IDataRecord dr)
-        {
-            ChatLog chat = new ChatLog();
-            chat.Sender = dr["sender"] != DBNull.Value ? dr["sender"].ToString() : "";
-            chat.Receiver = dr["receiver"] != DBNull.Value ? dr["receiver"].ToString() : "";
-            chat.Time = dr["time"] != DBNull.Value ? dr["time"].ToString() : "";
-            chat.Data = dr["data"] != DBNull.Value ? dr["data"].ToString() : "";
-            return chat;
         }
         private static ChatLog EntryToChatLog(DataRow dr)
         {

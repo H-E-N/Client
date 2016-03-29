@@ -48,13 +48,20 @@
             this.toolFaceTime = new System.Windows.Forms.ToolStripButton();
             this.toolVoice = new System.Windows.Forms.ToolStripButton();
             this.toolFile = new System.Windows.Forms.ToolStripDropDownButton();
-            this.发送文件ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.发送文件夹ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolSendFile = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolSendFiles = new System.Windows.Forms.ToolStripMenuItem();
             this.lSignature = new CCWin.SkinControl.SkinLabel();
+            this.PanelFile = new CCWin.SkinControl.SkinPanel();
+            this.lSender = new System.Windows.Forms.Label();
+            this.ProgressBarFile = new CCWin.SkinControl.SkinProgressBar();
+            this.llRefuse = new System.Windows.Forms.LinkLabel();
+            this.llAccept = new System.Windows.Forms.LinkLabel();
+            this.tipSignature = new System.Windows.Forms.ToolTip(this.components);
             this.skinPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureicon)).BeginInit();
             this.skToolMenu.SuspendLayout();
             this.skinToolStrip1.SuspendLayout();
+            this.PanelFile.SuspendLayout();
             this.SuspendLayout();
             // 
             // skinPanel1
@@ -73,9 +80,11 @@
             // pictureicon
             // 
             this.pictureicon.BackColor = System.Drawing.Color.Transparent;
+            this.pictureicon.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.pictureicon.Location = new System.Drawing.Point(3, 3);
             this.pictureicon.Name = "pictureicon";
             this.pictureicon.Size = new System.Drawing.Size(46, 43);
+            this.pictureicon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureicon.TabIndex = 9;
             this.pictureicon.TabStop = false;
             // 
@@ -96,6 +105,7 @@
             this.rtbMsg.HiglightColor = CCWin.SkinControl.RtfRichTextBox.RtfColor.White;
             this.rtbMsg.Location = new System.Drawing.Point(12, 98);
             this.rtbMsg.Name = "rtbMsg";
+            this.rtbMsg.ReadOnly = true;
             this.rtbMsg.Size = new System.Drawing.Size(534, 198);
             this.rtbMsg.TabIndex = 3;
             this.rtbMsg.Text = "";
@@ -159,7 +169,7 @@
             this.skToolMenu.Location = new System.Drawing.Point(14, 301);
             this.skToolMenu.Name = "skToolMenu";
             this.skToolMenu.RadiusStyle = CCWin.SkinClass.RoundStyle.All;
-            this.skToolMenu.Size = new System.Drawing.Size(153, 27);
+            this.skToolMenu.Size = new System.Drawing.Size(122, 27);
             this.skToolMenu.SkinAllColor = true;
             this.skToolMenu.TabIndex = 8;
             this.skToolMenu.Text = "skinToolStrip2";
@@ -345,8 +355,8 @@
             this.toolFile.AutoSize = false;
             this.toolFile.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.发送文件ToolStripMenuItem,
-            this.发送文件夹ToolStripMenuItem});
+            this.toolSendFile,
+            this.toolSendFiles});
             this.toolFile.Image = ((System.Drawing.Image)(resources.GetObject("toolFile.Image")));
             this.toolFile.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.toolFile.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -355,17 +365,19 @@
             this.toolFile.Size = new System.Drawing.Size(50, 30);
             this.toolFile.Text = "发送文件";
             // 
-            // 发送文件ToolStripMenuItem
+            // toolSendFile
             // 
-            this.发送文件ToolStripMenuItem.Name = "发送文件ToolStripMenuItem";
-            this.发送文件ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.发送文件ToolStripMenuItem.Text = "发送文件";
+            this.toolSendFile.Name = "toolSendFile";
+            this.toolSendFile.Size = new System.Drawing.Size(136, 22);
+            this.toolSendFile.Text = "发送文件";
+            this.toolSendFile.Click += new System.EventHandler(this.toolSendFile_Click);
             // 
-            // 发送文件夹ToolStripMenuItem
+            // toolSendFiles
             // 
-            this.发送文件夹ToolStripMenuItem.Name = "发送文件夹ToolStripMenuItem";
-            this.发送文件夹ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.发送文件夹ToolStripMenuItem.Text = "发送文件夹";
+            this.toolSendFiles.Name = "toolSendFiles";
+            this.toolSendFiles.Size = new System.Drawing.Size(136, 22);
+            this.toolSendFiles.Text = "发送文件夹";
+            this.toolSendFiles.Click += new System.EventHandler(this.toolSendFiles_Click);
             // 
             // lSignature
             // 
@@ -378,12 +390,77 @@
             this.lSignature.Size = new System.Drawing.Size(0, 17);
             this.lSignature.TabIndex = 9;
             // 
+            // PanelFile
+            // 
+            this.PanelFile.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.PanelFile.Controls.Add(this.lSender);
+            this.PanelFile.Controls.Add(this.ProgressBarFile);
+            this.PanelFile.Controls.Add(this.llRefuse);
+            this.PanelFile.Controls.Add(this.llAccept);
+            this.PanelFile.ControlState = CCWin.SkinClass.ControlState.Normal;
+            this.PanelFile.DownBack = null;
+            this.PanelFile.Location = new System.Drawing.Point(14, 248);
+            this.PanelFile.MouseBack = null;
+            this.PanelFile.Name = "PanelFile";
+            this.PanelFile.NormlBack = null;
+            this.PanelFile.Size = new System.Drawing.Size(242, 48);
+            this.PanelFile.TabIndex = 10;
+            this.PanelFile.Visible = false;
+            // 
+            // lSender
+            // 
+            this.lSender.AutoSize = true;
+            this.lSender.ForeColor = System.Drawing.Color.Blue;
+            this.lSender.Location = new System.Drawing.Point(9, 29);
+            this.lSender.Name = "lSender";
+            this.lSender.Size = new System.Drawing.Size(125, 12);
+            this.lSender.TabIndex = 11;
+            this.lSender.Text = "Name向你发送一个文件";
+            // 
+            // ProgressBarFile
+            // 
+            this.ProgressBarFile.Back = null;
+            this.ProgressBarFile.BackColor = System.Drawing.Color.Transparent;
+            this.ProgressBarFile.BarBack = null;
+            this.ProgressBarFile.BarRadiusStyle = CCWin.SkinClass.RoundStyle.All;
+            this.ProgressBarFile.ForeColor = System.Drawing.Color.Red;
+            this.ProgressBarFile.Location = new System.Drawing.Point(138, 11);
+            this.ProgressBarFile.Name = "ProgressBarFile";
+            this.ProgressBarFile.RadiusStyle = CCWin.SkinClass.RoundStyle.All;
+            this.ProgressBarFile.Size = new System.Drawing.Size(75, 14);
+            this.ProgressBarFile.TabIndex = 11;
+            // 
+            // llRefuse
+            // 
+            this.llRefuse.AutoSize = true;
+            this.llRefuse.LinkColor = System.Drawing.Color.Red;
+            this.llRefuse.Location = new System.Drawing.Point(65, 11);
+            this.llRefuse.Name = "llRefuse";
+            this.llRefuse.Size = new System.Drawing.Size(29, 12);
+            this.llRefuse.TabIndex = 11;
+            this.llRefuse.TabStop = true;
+            this.llRefuse.Text = "拒绝";
+            this.llRefuse.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llRefuse_LinkClicked);
+            // 
+            // llAccept
+            // 
+            this.llAccept.AutoSize = true;
+            this.llAccept.LinkColor = System.Drawing.Color.Green;
+            this.llAccept.Location = new System.Drawing.Point(16, 11);
+            this.llAccept.Name = "llAccept";
+            this.llAccept.Size = new System.Drawing.Size(29, 12);
+            this.llAccept.TabIndex = 11;
+            this.llAccept.TabStop = true;
+            this.llAccept.Text = "接收";
+            this.llAccept.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llAccept_LinkClicked);
+            // 
             // Chat
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(97)))), ((int)(((byte)(158)))), ((int)(((byte)(215)))));
             this.ClientSize = new System.Drawing.Size(571, 514);
+            this.Controls.Add(this.PanelFile);
             this.Controls.Add(this.lSignature);
             this.Controls.Add(this.skToolMenu);
             this.Controls.Add(this.btnSend);
@@ -406,6 +483,8 @@
             this.skToolMenu.PerformLayout();
             this.skinToolStrip1.ResumeLayout(false);
             this.skinToolStrip1.PerformLayout();
+            this.PanelFile.ResumeLayout(false);
+            this.PanelFile.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -423,8 +502,8 @@
         private CCWin.SkinControl.SkinButton btnClose;
         private CCWin.SkinControl.SkinButton btnSend;
         private CCWin.SkinControl.SkinPictureBox pictureicon;
-        private System.Windows.Forms.ToolStripMenuItem 发送文件ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 发送文件夹ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem toolSendFile;
+        private System.Windows.Forms.ToolStripMenuItem toolSendFiles;
         private CCWin.SkinControl.SkinToolStrip skToolMenu;
         private System.Windows.Forms.ToolStripButton toolFont;
         private System.Windows.Forms.ToolStripButton toolCountenance;
@@ -434,5 +513,11 @@
         private System.Windows.Forms.FontDialog fontDialog1;
         public CCWin.SkinControl.RtfRichTextBox rtbSend;
         private CCWin.SkinControl.SkinLabel lSignature;
+        private CCWin.SkinControl.SkinPanel PanelFile;
+        private System.Windows.Forms.LinkLabel llRefuse;
+        private System.Windows.Forms.LinkLabel llAccept;
+        private CCWin.SkinControl.SkinProgressBar ProgressBarFile;
+        private System.Windows.Forms.Label lSender;
+        private System.Windows.Forms.ToolTip tipSignature;
     }
 }

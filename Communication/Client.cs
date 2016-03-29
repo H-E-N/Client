@@ -43,7 +43,6 @@ namespace Communication
             BoardCast bc = new BoardCast();
             Thread.Sleep(100);
             bc.LoginBoardCast();
-
         }
 
         /// <summary>
@@ -51,9 +50,17 @@ namespace Communication
         /// </summary>
         private void Init()
         {
-            lName.Text = "Admininistrator";
             lIP.Text = Base.GetAddressIP();
-            pictureIcon.ImageLocation = "head/4.png";
+            ClientManager clientManager = new ClientManager();
+            User user = clientManager.GetUserByIP(lIP.Text);
+            lName.Text = user.Name;
+            pictureIcon.Image = Base.ChageToImage(user.Picture);
+            if (user.Signature.Length > 10)
+            {
+                lSignature.Text = user.Signature.Substring(0, 10)+"...";
+                TipSignature.SetToolTip(lSignature, user.Signature);
+            }
+            else lSignature.Text = user.Signature;
         }
         /// <summary>
         /// 打开聊天窗体
@@ -89,25 +96,26 @@ namespace Communication
         {
             try
             {
+                minIcon.Visible = false;
                 BoardCast bc = new BoardCast();
                 bc.OutLoginBoardCast();
+                System.Diagnostics.Process.GetCurrentProcess().Kill();
             }
             catch(Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                Base.WriteLog(ex.Message);
             }
         }
 
         private void btnSet_Click(object sender, EventArgs e)
         {
-            BoardCast bc = new BoardCast();
-            bc.LoginBoardCast();
-        }
-
-        private void skinButton1_Click(object sender, EventArgs e)
-        {
-            BoardCast bc = new BoardCast();
-            bc.OutLoginBoardCast();
+            Setting set = new Setting(Base.GetAddressIP());
+            if(set.ShowDialog()==DialogResult.OK)
+            {
+                Init();
+                BoardCast bc = new BoardCast();
+                bc.LoginBoardCast();
+            }
         }
         #region 窗体隐藏
         private void Client_MouseEnter(object sender, EventArgs e)
@@ -160,6 +168,7 @@ namespace Communication
         /// <param name="e"></param>
         private void 退出ToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            minIcon.Visible = false;
             Application.Exit();
         }
         /// <summary>

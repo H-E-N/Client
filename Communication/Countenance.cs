@@ -774,7 +774,7 @@ namespace Communication
                                     break;
                                 }
 
-                                Tools.CreateDir(Path.GetDirectoryName(fullname));
+                                Base.CreateDir(Path.GetDirectoryName(fullname));
 
                                 if (!Path.GetDirectoryName(file).Equals(Path.GetDirectoryName(fullname)))
                                 {

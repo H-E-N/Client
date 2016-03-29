@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -20,30 +22,37 @@ namespace Model
         /// </summary>
         public static string GetAddressIP()
         {
-            ///获取本地的IP地址
-            string AddressIP = string.Empty;
-            foreach (IPAddress _IPAddress in Dns.GetHostEntry(Dns.GetHostName()).AddressList)
-            {
-                if (_IPAddress.AddressFamily.ToString() == "InterNetwork")
-                {
-                    AddressIP = _IPAddress.ToString();
-                    break;
-                }
-                else
-                {
-                    AddressIP = Dns.GetHostEntry(Dns.GetHostName()).AddressList[0].ToString();
-                }
-            }
-            return AddressIP;
+            ////获取本地的IP地址
+            //string AddressIP = string.Empty;
+            //foreach (IPAddress _IPAddress in Dns.GetHostEntry(Dns.GetHostName()).AddressList)
+            //{
+            //    if (_IPAddress.AddressFamily.ToString() == "InterNetwork")
+            //    {
+            //        AddressIP = _IPAddress.ToString();
+            //        break;
+            //    }
+            //    else
+            //    {
+            //        AddressIP = Dns.GetHostEntry(Dns.GetHostName()).AddressList[0].ToString();
+            //    }
+            //}
+            //return AddressIP;
 
 
             //获得局域网的IP地址
-            //IPHostEntry ihe = Dns.GetHostByName(Dns.GetHostName());
-            //IPAddress myIp = ihe.AddressList[0];
-            //string loginIP = myIp.ToString();
-            //return loginIP;
+            IPHostEntry ihe = Dns.GetHostByName(Dns.GetHostName());
+            IPAddress myIp = ihe.AddressList[0];
+            string loginIP = myIp.ToString();
+            return loginIP;
+
 
         }
+
+        public static string GetDateTime()
+        {
+            return DateTime.Now.ToString("yyy-MM-dd HH:mm:ss");
+        }
+        #region 封装
         //特殊字符
         private static string[] SpecificSymbol = { "ξ∮┮¤≡" };
         private static string CrypticKey = @")sf,<xy'>9D+f-3v";//#'[H{EN$1a}(zA~?)sf,<xy'>9D+f-3v
@@ -80,7 +89,8 @@ namespace Model
             }
             else { }
             return chatlog;
-        }
+        } 
+        #endregion
 
         #region AES加密解密
         /// <summary>
@@ -141,7 +151,6 @@ namespace Model
             return message;
         }
         #endregion
-
 
         #region 二进制序列化
         /// <summary>
@@ -240,15 +249,96 @@ namespace Model
             return obj;
         }
         #endregion
-    }
-    /// <summary>
-    /// 工具类定义
-    /// </summary>
-    public class Tools
-    {
 
+        #region UDP分割合并
+        /// <summary>
+        /// 分割UDP数据包
+        /// </summary>
+        /// <param name="sequence">UDP数据包所持有的序号</param>
+        /// <param name="datagram">被分割的UDP数据包</param>
+        /// <param name="chunkLength">分割块的长度</param>
+        /// <returns>
+        /// 分割后的UDP数据包列表
+        /// </returns>
+        public static ICollection<UdpPacket> Split(long sequence, byte[] datagram, int chunkLength)
+        {
+            if (datagram == null)
+                throw new ArgumentNullException("datagram");
 
+            List<UdpPacket> packets = new List<UdpPacket>();
 
+            int chunks = datagram.Length / chunkLength;
+            int remainder = datagram.Length % chunkLength;
+            int total = chunks;
+            if (remainder > 0) total++;
+
+            for (int i = 1; i <= chunks; i++)
+            {
+                byte[] chunk = new byte[chunkLength];
+                Buffer.BlockCopy(datagram, (i - 1) * chunkLength, chunk, 0, chunkLength);
+                packets.Add(new UdpPacket(sequence, total, i, chunk, chunkLength));
+            }
+            if (remainder > 0)
+            {
+                int length = datagram.Length - (chunkLength * chunks);
+                byte[] chunk = new byte[length];
+                Buffer.BlockCopy(datagram, chunkLength * chunks, chunk, 0, length);
+                packets.Add(new UdpPacket(sequence, total, total, chunk, length));
+            }
+            return packets;
+        }
+        /// <summary>
+        /// UDP数据包合并
+        /// </summary>
+        /// <param name="udpPackets"></param>
+        /// <returns></returns>
+        public static byte[] CopyDataUdpPacket(List<UdpPacket> udpPackets)
+        {
+            List<byte> bytelist = new List<byte>();
+            long sequence = udpPackets[0].Sequence;
+
+            foreach (UdpPacket udpPacket in udpPackets)
+            {
+                if (udpPacket.Sequence == sequence)
+                {
+                    bytelist.AddRange(udpPacket.Chunk);
+                }
+            }
+            byte[] bytes = new byte[bytelist.Count];
+            bytelist.CopyTo(bytes);
+            return bytes;
+        } 
+        #endregion
+        /// <summary>
+        /// 错误日志
+        /// </summary>
+        /// <param name="message"></param>
+        public static void WriteLog(string message)
+        {
+            string path = Directory.GetCurrentDirectory() + "\\ErrorLog.txt";
+            FileStream fs = null;
+            StreamWriter sw = null;
+            try
+            {
+                if (!File.Exists(path))
+                {
+                    fs = new FileStream(path, FileMode.Create, FileAccess.Write);//创建写入文件
+                }
+                else
+                {
+                    fs = new FileStream(path, FileMode.Append, FileAccess.Write);
+                }
+                sw = new StreamWriter(fs);
+                sw.WriteLine(GetDateTime() + "   " + message);//开始写入值
+            }
+            finally
+            {
+                sw.Flush();
+                fs.Flush();
+                sw.Close();
+                fs.Close();
+            }
+        }
         /// <summary>
         /// 创建目录
         /// </summary>
@@ -269,8 +359,49 @@ namespace Model
                 }
             }
         }
-
-
+        /// <summary>
+        /// string类型转换成image类型
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static Image ChageToImage(byte[] bytes)
+        {
+            MemoryStream ms = new MemoryStream(bytes);
+            Image image = Image.FromStream(ms);
+            return image;
+        }
+        public static byte[] ChangeToBytes(Image image)
+        {
+            ImageFormat format = image.RawFormat;
+            using (MemoryStream ms = new MemoryStream())
+            {
+                if (format.Equals(ImageFormat.Jpeg))
+                {
+                    image.Save(ms, ImageFormat.Jpeg);
+                }
+                else if (format.Equals(ImageFormat.Png))
+                {
+                    image.Save(ms, ImageFormat.Png);
+                }
+                else if (format.Equals(ImageFormat.Bmp))
+                {
+                    image.Save(ms, ImageFormat.Bmp);
+                }
+                else if (format.Equals(ImageFormat.Gif))
+                {
+                    image.Save(ms, ImageFormat.Gif);
+                }
+                else if (format.Equals(ImageFormat.Icon))
+                {
+                    image.Save(ms, ImageFormat.Icon);
+                }
+                byte[] buffer = new byte[ms.Length];
+                //Image.Save()会改变MemoryStream的Position，需要重新Seek到Begin
+                ms.Seek(0, SeekOrigin.Begin);
+                ms.Read(buffer, 0, buffer.Length);
+                return buffer;
+            }
+        }
     }
     /// <summary>
     /// 安全助手类定义

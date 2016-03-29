@@ -30,7 +30,7 @@ namespace Communication
         private void Information_Load(object sender, EventArgs e)
         {
             ChatManager chatManager = new ChatManager();
-            User user = chatManager.GetUser(chatlog.Sender);
+            User user = chatManager.GetUser();
             picbIcon.ImageLocation = user.Picture;
             lName.Text = user.Name;
             lData.Text = chatlog.Data;

@@ -34,22 +34,29 @@
             this.TabClient = new CCWin.SkinControl.SkinTabControl();
             this.tabContacts = new CCWin.SkinControl.SkinTabPage();
             this.chatshow = new CCWin.SkinControl.ChatListBox();
+            this.rightMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.头像显示ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.大头像ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.小头像ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.刷新联系人ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabGroup = new CCWin.SkinControl.SkinTabPage();
-            this.pictureIcon = new System.Windows.Forms.PictureBox();
             this.lName = new System.Windows.Forms.Label();
             this.lIP = new System.Windows.Forms.Label();
             this.btnSet = new CCWin.SkinControl.SkinButton();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.skinButton1 = new CCWin.SkinControl.SkinButton();
+            this.lSignature = new System.Windows.Forms.Label();
+            this.pictureIcon = new System.Windows.Forms.PictureBox();
             this.minIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.minMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.显示主菜单ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.退出ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.TipSignature = new System.Windows.Forms.ToolTip(this.components);
             this.panel2.SuspendLayout();
             this.TabClient.SuspendLayout();
             this.tabContacts.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureIcon)).BeginInit();
+            this.rightMenu.SuspendLayout();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureIcon)).BeginInit();
             this.minMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -59,7 +66,7 @@
             this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel2.Location = new System.Drawing.Point(4, 157);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(260, 436);
+            this.panel2.Size = new System.Drawing.Size(283, 436);
             this.panel2.TabIndex = 1;
             // 
             // TabClient
@@ -83,7 +90,7 @@
             this.TabClient.PageImagePosition = CCWin.SkinControl.SkinTabControl.ePageImagePosition.Left;
             this.TabClient.PageNorml = null;
             this.TabClient.SelectedIndex = 0;
-            this.TabClient.Size = new System.Drawing.Size(260, 436);
+            this.TabClient.Size = new System.Drawing.Size(283, 436);
             this.TabClient.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.TabClient.TabIndex = 1;
             // 
@@ -94,7 +101,7 @@
             this.tabContacts.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabContacts.Location = new System.Drawing.Point(0, 36);
             this.tabContacts.Name = "tabContacts";
-            this.tabContacts.Size = new System.Drawing.Size(260, 400);
+            this.tabContacts.Size = new System.Drawing.Size(283, 400);
             this.tabContacts.TabIndex = 0;
             this.tabContacts.TabItemImage = null;
             this.tabContacts.Text = "联系人";
@@ -102,6 +109,7 @@
             // chatshow
             // 
             this.chatshow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.chatshow.ContextMenuStrip = this.rightMenu;
             this.chatshow.Dock = System.Windows.Forms.DockStyle.Fill;
             this.chatshow.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.chatshow.ForeColor = System.Drawing.Color.Black;
@@ -110,11 +118,47 @@
             this.chatshow.Location = new System.Drawing.Point(0, 0);
             this.chatshow.Name = "chatshow";
             this.chatshow.SelectSubItem = null;
-            this.chatshow.Size = new System.Drawing.Size(260, 400);
+            this.chatshow.Size = new System.Drawing.Size(283, 400);
             this.chatshow.SubItemMenu = null;
             this.chatshow.TabIndex = 0;
             this.chatshow.Text = "chatListBox1";
             this.chatshow.DoubleClickSubItem += new CCWin.SkinControl.ChatListBox.ChatListEventHandler(this.chatshow_DoubleClickSubItem);
+            // 
+            // rightMenu
+            // 
+            this.rightMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.头像显示ToolStripMenuItem,
+            this.刷新联系人ToolStripMenuItem});
+            this.rightMenu.Name = "rightMenu";
+            this.rightMenu.Size = new System.Drawing.Size(149, 48);
+            // 
+            // 头像显示ToolStripMenuItem
+            // 
+            this.头像显示ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.大头像ToolStripMenuItem,
+            this.小头像ToolStripMenuItem});
+            this.头像显示ToolStripMenuItem.Name = "头像显示ToolStripMenuItem";
+            this.头像显示ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.头像显示ToolStripMenuItem.Text = "头像显示";
+            // 
+            // 大头像ToolStripMenuItem
+            // 
+            this.大头像ToolStripMenuItem.Image = global::Communication.Properties.Resources.menu_check;
+            this.大头像ToolStripMenuItem.Name = "大头像ToolStripMenuItem";
+            this.大头像ToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
+            this.大头像ToolStripMenuItem.Text = "大头像";
+            // 
+            // 小头像ToolStripMenuItem
+            // 
+            this.小头像ToolStripMenuItem.Name = "小头像ToolStripMenuItem";
+            this.小头像ToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
+            this.小头像ToolStripMenuItem.Text = "小头像";
+            // 
+            // 刷新联系人ToolStripMenuItem
+            // 
+            this.刷新联系人ToolStripMenuItem.Name = "刷新联系人ToolStripMenuItem";
+            this.刷新联系人ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.刷新联系人ToolStripMenuItem.Text = "刷新好友列表";
             // 
             // tabGroup
             // 
@@ -122,31 +166,25 @@
             this.tabGroup.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabGroup.Location = new System.Drawing.Point(0, 36);
             this.tabGroup.Name = "tabGroup";
-            this.tabGroup.Size = new System.Drawing.Size(260, 400);
+            this.tabGroup.Size = new System.Drawing.Size(249, 400);
             this.tabGroup.TabIndex = 1;
             this.tabGroup.TabItemImage = null;
             this.tabGroup.Text = "群组";
             // 
-            // pictureIcon
-            // 
-            this.pictureIcon.Location = new System.Drawing.Point(13, 13);
-            this.pictureIcon.Name = "pictureIcon";
-            this.pictureIcon.Size = new System.Drawing.Size(110, 100);
-            this.pictureIcon.TabIndex = 0;
-            this.pictureIcon.TabStop = false;
-            // 
             // lName
             // 
             this.lName.AutoSize = true;
-            this.lName.Location = new System.Drawing.Point(157, 28);
+            this.lName.Font = new System.Drawing.Font("宋体", 15F);
+            this.lName.Location = new System.Drawing.Point(102, 25);
             this.lName.Name = "lName";
-            this.lName.Size = new System.Drawing.Size(0, 12);
+            this.lName.Size = new System.Drawing.Size(0, 20);
             this.lName.TabIndex = 1;
+            this.lName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lIP
             // 
             this.lIP.AutoSize = true;
-            this.lIP.Location = new System.Drawing.Point(157, 54);
+            this.lIP.Location = new System.Drawing.Point(104, 54);
             this.lIP.Name = "lIP";
             this.lIP.Size = new System.Drawing.Size(0, 12);
             this.lIP.TabIndex = 2;
@@ -156,7 +194,7 @@
             this.btnSet.BackColor = System.Drawing.Color.Transparent;
             this.btnSet.ControlState = CCWin.SkinClass.ControlState.Normal;
             this.btnSet.DownBack = null;
-            this.btnSet.Location = new System.Drawing.Point(159, 90);
+            this.btnSet.Location = new System.Drawing.Point(124, 99);
             this.btnSet.MouseBack = null;
             this.btnSet.Name = "btnSet";
             this.btnSet.NormlBack = null;
@@ -168,7 +206,7 @@
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.skinButton1);
+            this.panel1.Controls.Add(this.lSignature);
             this.panel1.Controls.Add(this.btnSet);
             this.panel1.Controls.Add(this.lIP);
             this.panel1.Controls.Add(this.lName);
@@ -176,23 +214,25 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(4, 28);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(260, 155);
+            this.panel1.Size = new System.Drawing.Size(283, 155);
             this.panel1.TabIndex = 0;
             // 
-            // skinButton1
+            // lSignature
             // 
-            this.skinButton1.BackColor = System.Drawing.Color.Transparent;
-            this.skinButton1.ControlState = CCWin.SkinClass.ControlState.Normal;
-            this.skinButton1.DownBack = null;
-            this.skinButton1.Location = new System.Drawing.Point(159, 61);
-            this.skinButton1.MouseBack = null;
-            this.skinButton1.Name = "skinButton1";
-            this.skinButton1.NormlBack = null;
-            this.skinButton1.Size = new System.Drawing.Size(75, 23);
-            this.skinButton1.TabIndex = 5;
-            this.skinButton1.Text = "skinButton1";
-            this.skinButton1.UseVisualStyleBackColor = false;
-            this.skinButton1.Click += new System.EventHandler(this.skinButton1_Click);
+            this.lSignature.AutoSize = true;
+            this.lSignature.Location = new System.Drawing.Point(104, 78);
+            this.lSignature.Name = "lSignature";
+            this.lSignature.Size = new System.Drawing.Size(0, 12);
+            this.lSignature.TabIndex = 5;
+            // 
+            // pictureIcon
+            // 
+            this.pictureIcon.Location = new System.Drawing.Point(13, 26);
+            this.pictureIcon.Name = "pictureIcon";
+            this.pictureIcon.Size = new System.Drawing.Size(78, 77);
+            this.pictureIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureIcon.TabIndex = 0;
+            this.pictureIcon.TabStop = false;
             // 
             // minIcon
             // 
@@ -208,19 +248,19 @@
             this.显示主菜单ToolStripMenuItem,
             this.退出ToolStripMenuItem});
             this.minMenu.Name = "minMenu";
-            this.minMenu.Size = new System.Drawing.Size(153, 70);
+            this.minMenu.Size = new System.Drawing.Size(137, 48);
             // 
             // 显示主菜单ToolStripMenuItem
             // 
             this.显示主菜单ToolStripMenuItem.Name = "显示主菜单ToolStripMenuItem";
-            this.显示主菜单ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.显示主菜单ToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
             this.显示主菜单ToolStripMenuItem.Text = "显示主菜单";
             this.显示主菜单ToolStripMenuItem.Click += new System.EventHandler(this.显示主菜单ToolStripMenuItem_Click);
             // 
             // 退出ToolStripMenuItem
             // 
             this.退出ToolStripMenuItem.Name = "退出ToolStripMenuItem";
-            this.退出ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.退出ToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
             this.退出ToolStripMenuItem.Text = "退出";
             this.退出ToolStripMenuItem.Click += new System.EventHandler(this.退出ToolStripMenuItem_Click);
             // 
@@ -229,7 +269,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
-            this.ClientSize = new System.Drawing.Size(285, 597);
+            this.ClientSize = new System.Drawing.Size(308, 597);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -243,9 +283,10 @@
             this.panel2.ResumeLayout(false);
             this.TabClient.ResumeLayout(false);
             this.tabContacts.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureIcon)).EndInit();
+            this.rightMenu.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureIcon)).EndInit();
             this.minMenu.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -263,10 +304,16 @@
         private CCWin.SkinControl.SkinButton btnSet;
         private System.Windows.Forms.Panel panel1;
         private CCWin.SkinControl.ChatListBox chatshow;
-        private CCWin.SkinControl.SkinButton skinButton1;
         private System.Windows.Forms.NotifyIcon minIcon;
         private System.Windows.Forms.ContextMenuStrip minMenu;
         private System.Windows.Forms.ToolStripMenuItem 显示主菜单ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 退出ToolStripMenuItem;
+        private System.Windows.Forms.Label lSignature;
+        private System.Windows.Forms.ToolTip TipSignature;
+        private System.Windows.Forms.ContextMenuStrip rightMenu;
+        private System.Windows.Forms.ToolStripMenuItem 头像显示ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 大头像ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 小头像ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 刷新联系人ToolStripMenuItem;
     }
 }
