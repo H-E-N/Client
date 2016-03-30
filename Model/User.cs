@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Model
 {
@@ -23,13 +22,6 @@ namespace Model
             get { return name; }
             set { name = value; }
         }
-        //private string picture;
-
-        //public string Picture
-        //{
-        //    get { return picture; }
-        //    set { picture = value; }
-        //}
         private byte[] picture;
 
         public byte[] Picture
@@ -43,6 +35,13 @@ namespace Model
         {
             get { return signature; }
             set { signature = value; }
+        }
+        private int group;
+
+        public int Group
+        {
+            get { return group; }
+            set { group = value; }
         }
     }
 }

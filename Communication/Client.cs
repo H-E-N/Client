@@ -32,6 +32,7 @@ namespace Communication
             this.Top = 0;
             this.ShowInTaskbar = false;
             Init();
+            System.Media.SystemSounds.Question.Play();
             //监听事件
             ClientManager clientManager = new ClientManager(chatshow);
             Thread ReceiveData = new Thread(clientManager.ReceviceData);
@@ -106,7 +107,11 @@ namespace Communication
                 Base.WriteLog(ex.Message);
             }
         }
-
+        /// <summary>
+        /// 个人设置
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnSet_Click(object sender, EventArgs e)
         {
             Setting set = new Setting(Base.GetAddressIP());
@@ -168,9 +173,21 @@ namespace Communication
         /// <param name="e"></param>
         private void 退出ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            minIcon.Visible = false;
-            Application.Exit();
+            try
+            {
+                minIcon.Visible = false;
+                BoardCast bc = new BoardCast();
+                bc.OutLoginBoardCast();
+                System.Diagnostics.Process.GetCurrentProcess().Kill();
+            }
+            catch (Exception ex)
+            {
+                Base.WriteLog(ex.Message);
+            }
         }
+        #endregion
+
+        #region 右击按钮
         /// <summary>
         /// 右击显示主菜单按钮
         /// </summary>
@@ -183,7 +200,39 @@ namespace Communication
             this.WindowState = FormWindowState.Normal;
             Client_MouseEnter(sender, e);
         }
-
+        /// <summary>
+        /// 头像变大
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ItemLargeIcon_Click(object sender, EventArgs e)
+        {
+            chatshow.IconSizeMode = ChatListItemIcon.Large;
+            ItemLargeIcon.Image = Communication.Properties.Resources.menu_check;
+            ItemSmallIcon.Image = null;
+        }
+        /// <summary>
+        /// 头像变小
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ItemSmallIcon_Click(object sender, EventArgs e)
+        {
+            chatshow.IconSizeMode = ChatListItemIcon.Small;
+            ItemSmallIcon.Image = Communication.Properties.Resources.menu_check;
+            ItemLargeIcon.Image = null;
+        }
+        /// <summary>
+        /// 刷新好友列表
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ItemFlush_Click(object sender, EventArgs e)
+        {
+            //ClientManager clientManager = new ClientManager(chatshow);
+            BoardCast bc = new BoardCast();
+            bc.LoginBoardCast();
+        }
         #endregion
     }
 }

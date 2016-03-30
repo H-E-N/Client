@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace BLL
@@ -27,15 +28,22 @@ namespace BLL
         /// <param name="ipReply"></param>
         public void BCReply(string ipReply)
         {
-            IPAddress remoteIP;
-            if (IPAddress.TryParse(ipReply, out remoteIP) == false)
-            { }
-            else
+            try
             {
-                IPEndPoint iep = new IPEndPoint(remoteIP, port);
-                byte[] bytes = Base.Serialize<User>(user);
-                bytes = CopyTOByte("REPY::", bytes);
-                SendBoardCast(iep, bytes);
+                IPAddress remoteIP;
+                if (IPAddress.TryParse(ipReply, out remoteIP) == false)
+                { }
+                else
+                {
+                    IPEndPoint iep = new IPEndPoint(remoteIP, port);
+                    byte[] bytes = Base.Serialize<User>(user);
+                    bytes = CopyTOByte("REPY::", bytes);
+                    SendBoardCast(iep, bytes);
+                }
+            }
+            catch(Exception e)
+            {
+                Base.WriteLog(e.Message);
             }
         }
         /// <summary>
@@ -98,20 +106,26 @@ namespace BLL
         /// <param name="bytes"></param>
         private void SendBoardCast(IPEndPoint iep, byte[] bytes)
         {
-            
-            try
+            Random random = new Random();
+            int sequence = random.Next();
+            ICollection<UdpPacket> udpPackets = Base.Split(sequence, bytes, 51200);
+            foreach (UdpPacket udpPacket in udpPackets)
             {
-                Random random=new Random();
-                long sequence = (long)Math.Floor( random.NextDouble()*1000000000D);
-                ICollection<UdpPacket> udpPackets = Base.Split(sequence, bytes,51200);
-                foreach(UdpPacket udpPacket in udpPackets)
+                try
                 {
                     UdpClient udpclient = new UdpClient();
                     byte[] udpPacketData = Base.Serialize<UdpPacket>(udpPacket);
+
                     IAsyncResult ar = udpclient.BeginSend(udpPacketData, udpPacketData.Length, iep, SendCallback, udpclient);
+                    //Base.WriteLog(udpPacketData.Length.ToString());
+                    Thread.Sleep(100);
+                }
+                catch (Exception e)
+                {
+                    Base.WriteLog(e.Message);
                 }
             }
-            catch { }
+
         }
         /// <summary>
         /// 广播回调函数

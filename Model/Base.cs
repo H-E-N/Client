@@ -260,7 +260,7 @@ namespace Model
         /// <returns>
         /// 分割后的UDP数据包列表
         /// </returns>
-        public static ICollection<UdpPacket> Split(long sequence, byte[] datagram, int chunkLength)
+        public static ICollection<UdpPacket> Split(int sequence, byte[] datagram, int chunkLength)
         {
             if (datagram == null)
                 throw new ArgumentNullException("datagram");
@@ -295,7 +295,7 @@ namespace Model
         public static byte[] CopyDataUdpPacket(List<UdpPacket> udpPackets)
         {
             List<byte> bytelist = new List<byte>();
-            long sequence = udpPackets[0].Sequence;
+            int sequence = udpPackets[0].Sequence;
 
             foreach (UdpPacket udpPacket in udpPackets)
             {

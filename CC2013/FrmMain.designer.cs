@@ -572,7 +572,7 @@ namespace CC2013
             this.GroupShow.Margin = new System.Windows.Forms.Padding(0);
             this.GroupShow.Name = "GroupShow";
             this.GroupShow.SelectSubItem = null;
-            this.GroupShow.Size = new System.Drawing.Size(200, 66);
+            this.GroupShow.Size = new System.Drawing.Size(279, 270);
             this.GroupShow.SubItemMenu = this.GroupingMenu;
             this.GroupShow.TabIndex = 3;
             this.GroupShow.VipFontColor = System.Drawing.Color.Red;
@@ -1817,7 +1817,7 @@ namespace CC2013
             this.GetChatShow.Margin = new System.Windows.Forms.Padding(0);
             this.GetChatShow.Name = "GetChatShow";
             this.GetChatShow.SelectSubItem = null;
-            this.GetChatShow.Size = new System.Drawing.Size(279, 270);
+            this.GetChatShow.Size = new System.Drawing.Size(200, 66);
             this.GetChatShow.SubItemMenu = this.GroupingMenu;
             this.GetChatShow.TabIndex = 3;
             this.GetChatShow.VipFontColor = System.Drawing.Color.Red;
@@ -3994,7 +3994,7 @@ namespace CC2013
             this.tabPage2.Location = new System.Drawing.Point(0, 34);
             this.tabPage2.Margin = new System.Windows.Forms.Padding(0);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Size = new System.Drawing.Size(200, 66);
+            this.tabPage2.Size = new System.Drawing.Size(279, 270);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
@@ -4006,7 +4006,7 @@ namespace CC2013
             this.tabPage3.Location = new System.Drawing.Point(0, 34);
             this.tabPage3.Margin = new System.Windows.Forms.Padding(0);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(279, 270);
+            this.tabPage3.Size = new System.Drawing.Size(200, 66);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.UseVisualStyleBackColor = true;
             // 

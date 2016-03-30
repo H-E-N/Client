@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Media;
 using System.Net;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
@@ -38,15 +39,18 @@ namespace BLL
         }//消息中传递的结构体
         public ClientManager(ChatListBox chatlistbox)
         {
+            CreateGroupUsers();
             CreateTableUsers();
             udpclient = new UdpClient(port);
             chat = chatlistbox;
             listItem = new ChatListItem("我的好友");
             chat.Items.Add(listItem);
+            //AddItem();
             AddFriend();
         }
         public ClientManager()
         {
+            CreateGroupUsers();
             CreateTableUsers();
         }
         /// <summary>
@@ -63,7 +67,21 @@ namespace BLL
                 Image img = Image.FromFile("head/4.png");
                 user.Picture = Base.ChangeToBytes(img);
                 user.Signature = " ";
+                user.Group = 0;
                 ClientService.InsertUser(user);
+            }
+        }
+        /// <summary>
+        /// 创建联系人分组表
+        /// </summary>
+        private void CreateGroupUsers()
+        {
+            UsersGroupService.CreateUsersGroup();
+            UsersGroup ug = new UsersGroup();
+            ug.GroupName = "我的好友";
+            if (!UsersGroupService.GetIDByUsersGroupName(ug.GroupName))
+            {
+                UsersGroupService.InsertUsersGroup(ug);
             }
         }
         /// <summary>
@@ -73,6 +91,7 @@ namespace BLL
         /// <returns></returns>
         public User GetUserByIP(string ip)
         {
+            CreateGroupUsers();
             CreateTableUsers();
             return ClientService.GetUserByIP(ip);
         }
@@ -97,9 +116,14 @@ namespace BLL
                     ChatListSubItem subItem = new ChatListSubItem(userlist[i].IP, userlist[i].Name, userlist[i].Signature);
                     subItem.HeadImage = Base.ChageToImage(userlist[i].Picture);
                     subItem.IpAddress = userlist[i].IP;
+                    subItem.Status = ChatListSubItem.UserStatus.Online;
                     if (userlist[i].IP != Base.GetAddressIP())
+                    {
                         subItem.HeadImage = subItem.GetDarkImage();
-                    listItem.SubItems.Add(subItem);
+                        subItem.Status = ChatListSubItem.UserStatus.OffLine;
+                    }
+                    listItem.SubItems.AddAccordingToStatus(subItem);
+                    listItem.SubItems.Sort();
                 }
             }
             //chat.SendToBack();
@@ -139,6 +163,10 @@ namespace BLL
             }
             ReceviceData();
         }
+        /// <summary>
+        /// 消息处理函数
+        /// </summary>
+        /// <param name="bytes"></param>
         private void ManageMsg(byte[] bytes)
         {
             try
@@ -249,25 +277,34 @@ namespace BLL
         /// <param name="message"></param>
         private void LoginUser(object message)
         {
-            User user = (User)message;
-            if (user.IP != Base.GetAddressIP())
+            try
             {
-                ChatListSubItem subItem = new ChatListSubItem(user.IP, user.Name, user.Signature);
-                subItem.HeadImage = Base.ChageToImage(user.Picture);
-                subItem.IpAddress = user.IP;
-                if (chat.GetSubItemsByIp(user.IP).Length > 0)
+                User user = (User)message;
+                if (user.IP != Base.GetAddressIP())
                 {
-                    chat.GetSubItemsByIp(user.IP)[0] = subItem;
-                    UpdateUser(user);
+                    ChatListSubItem subItem = new ChatListSubItem(user.IP, user.Name, user.Signature);
+                    subItem.HeadImage = Base.ChageToImage(user.Picture);
+                    subItem.IpAddress = user.IP;
+                    subItem.Status = ChatListSubItem.UserStatus.Online;
+                    ChatListSubItem[] listSubItem = chat.GetSubItemsByIp(user.IP);
+                    if (listSubItem.Length > 0)
+                    {
+                        listItem.SubItems.Remove(listSubItem[0]);
+                        UpdateUser(user);
+                    }
+                    else
+                    {
+                        user.Group = 0;
+                        ClientService.InsertUser(user);
+                    }
+                    listItem.SubItems.AddAccordingToStatus(subItem);
+                    BoardCast bc = new BoardCast();
+                    bc.BCReply(user.IP);
                 }
-                else
-                {
-                    ClientService.InsertUser(user);
-                    listItem.SubItems.Add(subItem);
-                }
-                BoardCast bc = new BoardCast();
-                Thread.Sleep(200);
-                bc.BCReply(user.IP);
+            }
+            catch(Exception e)
+            {
+                Base.WriteLog(e.Message);
             }
         }
         /// <summary>
@@ -282,16 +319,19 @@ namespace BLL
                 ChatListSubItem subItem = new ChatListSubItem(user.IP, user.Name, user.Signature);
                 subItem.HeadImage = Base.ChageToImage(user.Picture);
                 subItem.IpAddress = user.IP;
-                if (chat.GetSubItemsByIp(user.IP).Length > 0)
+                subItem.Status = ChatListSubItem.UserStatus.Online;
+                ChatListSubItem[] listSubItem = chat.GetSubItemsByIp(user.IP);
+                if (listSubItem.Length > 0)
                 {
-                    chat.GetSubItemsByIp(user.IP)[0] = subItem;
+                    listItem.SubItems.Remove(listSubItem[0]);
                     UpdateUser(user);
                 }
                 else
                 {
+                    user.Group = 0;
                     ClientService.InsertUser(user);
-                    listItem.SubItems.Add(subItem);
                 }
+                listItem.SubItems.AddAccordingToStatus(subItem);
             }
         }
         /// <summary>
@@ -321,21 +361,19 @@ namespace BLL
             else
             {
                 chat.GetSubItemsByIp(chatlog.Sender)[0].IsTwinkle = true;
-                Information info = new Information(chatlog);
-                //info.Text = "提示";
-                //Information info = new Information();
-                info.Show();
-                //FrmChat formRMsg = new FrmChat(msgIP, msgFrom, msgID, msgDetail);
-                //formRMsg.Text = "与 " + msgFrom + " 对话中";
-                //formRMsg.WindowState = FormWindowState.Minimized;
-                //formRMsg.ShowDialog();
-                //formRMsg.Show();
-                //formRMsg.WindowState = FormWindowState.Minimized;
-                //IntPtr newHandle = NativeMethods.FindWindow(null, info.Text);
-
-                //NativeMethods.FlashWindow(newHandle, true);
+                Thread TShowInfo = new Thread(ShowInformation);
+                TShowInfo.Start(chatlog);
             }
+            SoundPlayer sp = new SoundPlayer();
+            sp.SoundLocation = @"Music/msg.wav";
+            sp.Play();
             ChatLogService.InsertChatLog(chatlog);
+        }
+        private void ShowInformation(object chat)
+        {
+            ChatLog chatlog = (ChatLog)chat;
+            Information info = new Information(chatlog);
+            info.ShowDialog();
         }
         /// <summary>
         /// 用户退出
@@ -344,11 +382,18 @@ namespace BLL
         private void QuitUser(object message)
         {
             User user = (User)message;
+            ChatListSubItem subItem = new ChatListSubItem(user.IP, user.Name, user.Signature);
+            subItem.HeadImage = Base.ChageToImage(user.Picture);
+            subItem.HeadImage = subItem.GetDarkImage();
+            subItem.IpAddress = user.IP;
+            subItem.Status = ChatListSubItem.UserStatus.OffLine;
             if (Base.GetAddressIP() != user.IP)
             {
-                if (chat.GetSubItemsByIp(user.IP).Length > 0)
+                ChatListSubItem[] listSubItem=chat.GetSubItemsByIp(user.IP);
+                if (listSubItem.Length > 0)
                 {
-                    chat.GetSubItemsByIp(user.IP)[0].HeadImage = chat.GetSubItemsByIp(user.IP)[0].GetDarkImage();
+                    listItem.SubItems.Remove(listSubItem[0]);
+                    listItem.SubItems.AddAccordingToStatus(subItem);
                 }
             }
         }

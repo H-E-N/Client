@@ -5,16 +5,10 @@ using CCWin.SkinControl;
 using Model;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Net.Sockets;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Communication
@@ -26,6 +20,7 @@ namespace Communication
         ChatManager chatManager;
         ClientManager clientManager;
         bool b = false;                  //判断是否在读取数据库，是则不进行震动、文件传输等操作
+        bool IsEnter = true;            //判断是否使用Enter快捷键
         const int WM_COPYDATA = 0x004A;//文本类型参数
         private string filePath = string.Empty;     //文件路径
         string fileName = string.Empty;//文件名字
@@ -80,10 +75,7 @@ namespace Communication
             }
             b = false;
         }
-        private void btnClose_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
+
         #region 聊天信息
         /// <summary>
         /// 发送聊天信息
@@ -148,7 +140,24 @@ namespace Communication
             chatlog.Data = Base.AESDecryption(chatlog.Data);
             DisplayMsg(rtbMsg, chatlog);
         }
-
+        /// <summary>
+        /// 消息发送快捷键
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void rtbSend_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (IsEnter && e.KeyCode == Keys.Enter)
+            {
+                e.Handled = true;
+                btnSend.PerformClick();
+            }
+            if (!IsEnter && e.Modifiers == Keys.Control && e.KeyCode == Keys.Enter)
+            {
+                e.Handled = true;
+                btnSend.PerformClick();
+            }
+        }
         #endregion
         #region 显示到屏幕
         delegate void AddChatlogDelegate(RtfRichTextBox rtbMsg, ChatLog chatlog);
@@ -387,6 +396,57 @@ namespace Communication
             FilesSend();
         }
         #endregion
+        #region 按钮
+        /// <summary>
+        /// 关闭按钮
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+        /// <summary>
+        /// 下拉按钮
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnDown_Click(object sender, EventArgs e)
+        {
+            btnDown.StopState = StopStates.Pressed;
+            DownMenu.Show(btnDown, new Point(0, btnDown.Height + 5));
+        }
+        /// <summary>
+        /// 设置Enter发送消息
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ItemSetEnter_Click(object sender, EventArgs e)
+        {
+            //修改显示的图片，设置快捷键
+            ItemSetEnter.Image = Communication.Properties.Resources.menu_check;
+            ItemSetCtrlEnter.Image = null;
+            IsEnter = true;
+        }
+        /// <summary>
+        /// 设置Ctrl+Enter发送消息
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ItemSetCtrlEnter_Click(object sender, EventArgs e)
+        {
+            //修改显示的图片，设置快捷键
+            ItemSetCtrlEnter.Image = Communication.Properties.Resources.menu_check;
+            ItemSetEnter.Image = null;
+            IsEnter = false;
+        }
+        private void DownMenu_Closing(object sender, ToolStripDropDownClosingEventArgs e)
+        {
+            //选择菜单关闭时按钮变回原样
+            btnDown.StopState = StopStates.NoStop;
+            btnDown.ControlState = ControlState.Normal;
+        }
+        #endregion
         #endregion
         #region 文件发送接收
         //文件发送方法
@@ -511,8 +571,5 @@ namespace Communication
             chatManager.SendChatlog(chatlog);
         }
         #endregion
-
-
-
     }
 }

@@ -57,11 +57,16 @@
             this.llRefuse = new System.Windows.Forms.LinkLabel();
             this.llAccept = new System.Windows.Forms.LinkLabel();
             this.tipSignature = new System.Windows.Forms.ToolTip(this.components);
+            this.btnDown = new CCWin.SkinControl.SkinButton();
+            this.DownMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.ItemSetEnter = new System.Windows.Forms.ToolStripMenuItem();
+            this.ItemSetCtrlEnter = new System.Windows.Forms.ToolStripMenuItem();
             this.skinPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureicon)).BeginInit();
             this.skToolMenu.SuspendLayout();
             this.skinToolStrip1.SuspendLayout();
             this.PanelFile.SuspendLayout();
+            this.DownMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // skinPanel1
@@ -120,6 +125,7 @@
             this.rtbSend.TabIndex = 4;
             this.rtbSend.Text = "";
             this.rtbSend.TextColor = CCWin.SkinControl.RtfRichTextBox.RtfColor.Black;
+            this.rtbSend.KeyDown += new System.Windows.Forms.KeyEventHandler(this.rtbSend_KeyDown);
             // 
             // skToolMenu
             // 
@@ -243,7 +249,7 @@
             this.btnSend.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(97)))), ((int)(((byte)(159)))), ((int)(((byte)(215)))));
             this.btnSend.ControlState = CCWin.SkinClass.ControlState.Normal;
             this.btnSend.DownBack = global::Communication.Properties.Resources.button_login_down;
-            this.btnSend.Location = new System.Drawing.Point(471, 484);
+            this.btnSend.Location = new System.Drawing.Point(451, 484);
             this.btnSend.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
             this.btnSend.MouseBack = global::Communication.Properties.Resources.button_login_hover;
             this.btnSend.Name = "btnSend";
@@ -261,7 +267,7 @@
             this.btnClose.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(97)))), ((int)(((byte)(159)))), ((int)(((byte)(215)))));
             this.btnClose.ControlState = CCWin.SkinClass.ControlState.Normal;
             this.btnClose.DownBack = global::Communication.Properties.Resources.button_login_down;
-            this.btnClose.Location = new System.Drawing.Point(390, 484);
+            this.btnClose.Location = new System.Drawing.Point(370, 484);
             this.btnClose.MouseBack = global::Communication.Properties.Resources.button_login_normal;
             this.btnClose.Name = "btnClose";
             this.btnClose.NormlBack = global::Communication.Properties.Resources.button_login_normal;
@@ -454,12 +460,53 @@
             this.llAccept.Text = "接收";
             this.llAccept.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llAccept_LinkClicked);
             // 
+            // btnDown
+            // 
+            this.btnDown.BackColor = System.Drawing.Color.Transparent;
+            this.btnDown.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(97)))), ((int)(((byte)(159)))), ((int)(((byte)(215)))));
+            this.btnDown.ControlState = CCWin.SkinClass.ControlState.Normal;
+            this.btnDown.DownBack = global::Communication.Properties.Resources.login_inputbtn_down;
+            this.btnDown.Image = global::Communication.Properties.Resources.login_inputbtn_highlight;
+            this.btnDown.Location = new System.Drawing.Point(524, 484);
+            this.btnDown.MouseBack = global::Communication.Properties.Resources.login_inputbtn_highlight;
+            this.btnDown.Name = "btnDown";
+            this.btnDown.NormlBack = global::Communication.Properties.Resources.login_inputbtn_normal;
+            this.btnDown.Size = new System.Drawing.Size(21, 23);
+            this.btnDown.TabIndex = 11;
+            this.btnDown.UseVisualStyleBackColor = false;
+            this.btnDown.Click += new System.EventHandler(this.btnDown_Click);
+            // 
+            // DownMenu
+            // 
+            this.DownMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ItemSetEnter,
+            this.ItemSetCtrlEnter});
+            this.DownMenu.Name = "DownMenu";
+            this.DownMenu.Size = new System.Drawing.Size(208, 70);
+            this.DownMenu.Closing += new System.Windows.Forms.ToolStripDropDownClosingEventHandler(this.DownMenu_Closing);
+            // 
+            // ItemSetEnter
+            // 
+            this.ItemSetEnter.Image = global::Communication.Properties.Resources.menu_check;
+            this.ItemSetEnter.Name = "ItemSetEnter";
+            this.ItemSetEnter.Size = new System.Drawing.Size(207, 22);
+            this.ItemSetEnter.Text = "按Enter键发送消息";
+            this.ItemSetEnter.Click += new System.EventHandler(this.ItemSetEnter_Click);
+            // 
+            // ItemSetCtrlEnter
+            // 
+            this.ItemSetCtrlEnter.Name = "ItemSetCtrlEnter";
+            this.ItemSetCtrlEnter.Size = new System.Drawing.Size(207, 22);
+            this.ItemSetCtrlEnter.Text = "按Ctrl+Enter键发送消息";
+            this.ItemSetCtrlEnter.Click += new System.EventHandler(this.ItemSetCtrlEnter_Click);
+            // 
             // Chat
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(97)))), ((int)(((byte)(158)))), ((int)(((byte)(215)))));
             this.ClientSize = new System.Drawing.Size(571, 514);
+            this.Controls.Add(this.btnDown);
             this.Controls.Add(this.PanelFile);
             this.Controls.Add(this.lSignature);
             this.Controls.Add(this.skToolMenu);
@@ -485,6 +532,7 @@
             this.skinToolStrip1.PerformLayout();
             this.PanelFile.ResumeLayout(false);
             this.PanelFile.PerformLayout();
+            this.DownMenu.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -519,5 +567,9 @@
         private CCWin.SkinControl.SkinProgressBar ProgressBarFile;
         private System.Windows.Forms.Label lSender;
         private System.Windows.Forms.ToolTip tipSignature;
+        private CCWin.SkinControl.SkinButton btnDown;
+        private System.Windows.Forms.ContextMenuStrip DownMenu;
+        private System.Windows.Forms.ToolStripMenuItem ItemSetEnter;
+        private System.Windows.Forms.ToolStripMenuItem ItemSetCtrlEnter;
     }
 }

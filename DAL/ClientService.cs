@@ -16,26 +16,29 @@ namespace DAL
         /// </summary>
         public static int CreateTableUsers()
         {
-            string creatTable = "CREATE TABLE IF NOT EXISTS Users(id INTEGER PRIMARY KEY AUTOINCREMENT, IP varchar(20), Name varchar(20), Picture Blob, Signature varchar(100));";//建表语句
+            string creatTable = "CREATE TABLE IF NOT EXISTS Users(id INTEGER PRIMARY KEY AUTOINCREMENT, IP varchar(20), Name varchar(20), Picture Blob, Signature varchar(100),Groups int);";//建表语句
             return SqliteHelper.ExecuteNonQuery(CommandType.Text, creatTable, null);
         }
+
         /// <summary>
         /// 插入用户数据
         /// </summary>
         /// <param name="user"></param>
         public static void InsertUser(User user)
         {
-            string sql = "insert into Users(ip,name,picture,signature) values(@ip,@name,@picture,@signature)";
+            string sql = "insert into Users(ip,name,picture,signature,groups) values(@ip,@name,@picture,@signature,@group)";
             SQLiteParameter[] paras ={
                                         new SQLiteParameter("@ip",DbType.String,20),
                                         new SQLiteParameter("@name",DbType.String,20),
                                         new SQLiteParameter("@picture",DbType.Binary),
-                                        new SQLiteParameter("@signature",DbType.String,100)
+                                        new SQLiteParameter("@signature",DbType.String,100),
+                                        new SQLiteParameter("@group",DbType.Int32)
                                     };
             paras[0].Value = user.IP;
             paras[1].Value = user.Name;
             paras[2].Value = user.Picture;
             paras[3].Value = user.Signature;
+            paras[4].Value = user.Group;
             SqliteHelper.ExecuteNonQuery(CommandType.Text, sql, paras);
         }
         /// <summary>
@@ -90,17 +93,19 @@ namespace DAL
         }
         public static void UpdateUser(User user)
         {
-            string sql = "update Users set Name=@Name,Signature=@Signature,Picture=@Picture where IP=@IP";
+            string sql = "update Users set Name=@Name,Signature=@Signature,Picture=@Picture,groups=@group where IP=@IP";
             SQLiteParameter[] param ={
                                         new SQLiteParameter("@IP",DbType.String,20),
                                         new SQLiteParameter("@Name",DbType.String,20),
                                         new SQLiteParameter("@Signature",DbType.String,100),
-                                        new SQLiteParameter("@Picture",DbType.Binary)
+                                        new SQLiteParameter("@Picture",DbType.Binary),
+                                        new SQLiteParameter("@group",DbType.Int32)
                                      };
             param[0].Value = user.IP;
             param[1].Value = user.Name;
             param[2].Value = user.Signature;
             param[3].Value = user.Picture;
+            param[4].Value = user.Group;
             SqliteHelper.ExecuteNonQuery(CommandType.Text, sql, param);
         }
         private static User EntryToUser(DataRow dr)
@@ -110,7 +115,9 @@ namespace DAL
             user.Name = dr["Name"] != DBNull.Value ? dr["Name"].ToString() : "Aministrator";
             user.Picture = dr["picture"] as byte[];
             user.Signature = dr["signature"] != DBNull.Value ? dr["signature"].ToString() : "";
+            user.Group = dr["groups"] != DBNull.Value ? Convert.ToInt32(dr["groups"]) : 0;
             return user;
         }
+
     }
 }
