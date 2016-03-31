@@ -34,7 +34,7 @@ namespace Communication
             Init();
             System.Media.SystemSounds.Question.Play();
             //监听事件
-            ClientManager clientManager = new ClientManager(chatshow);
+            ClientManager clientManager = new ClientManager(chatshow,chatGroupshow);
             Thread ReceiveData = new Thread(clientManager.ReceviceData);
             ReceiveData.IsBackground = true;
             ReceiveData.Start();
@@ -52,8 +52,8 @@ namespace Communication
         private void Init()
         {
             lIP.Text = Base.GetAddressIP();
-            ClientManager clientManager = new ClientManager();
-            User user = clientManager.GetUserByIP(lIP.Text);
+            UserManager userManager = new UserManager();
+            User user = userManager.GetUserByIP(lIP.Text);
             lName.Text = user.Name;
             pictureIcon.Image = Base.ChageToImage(user.Picture);
             if (user.Signature.Length > 10)
@@ -233,6 +233,29 @@ namespace Communication
             BoardCast bc = new BoardCast();
             bc.LoginBoardCast();
         }
+        /// <summary>
+        /// 添加群组
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ItemAddGroup_Click(object sender, EventArgs e)
+        {
+            AddGroup addGroup = new AddGroup();
+            addGroup.Show();
+        }
         #endregion
+
+        private void chatGroupshow_DoubleClickSubItem(object sender, ChatListEventArgs e, MouseEventArgs es)
+        {
+            ChatListSubItem subItem = (ChatListSubItem)e.SelectSubItem;
+            Group group = new Group();
+            group.GroupName = subItem.DisplayName;
+            group.GroupPicture = Base.ChangeToBytes(subItem.HeadImage);
+            group.GroupSignature = subItem.PersonalMsg;
+            GroupChat groupchat = new GroupChat(group);
+            groupchat.Show();
+        }
+
+
     }
 }

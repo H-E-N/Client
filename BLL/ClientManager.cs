@@ -19,10 +19,19 @@ namespace BLL
 {
     public class ClientManager
     {
+        //联系人
         private ChatListBox chat;
         private ChatListItem listItem;
+
+        //群组
+        private ChatListBox groupchat;
+        private ChatListItem grouplistItem;
+
+
         private int port = 8001;
         private UdpClient udpclient;
+        private UserManager userManager;
+        private GroupManager groupManager;
         List<UdpPacket> udpPackets = new List<UdpPacket>();
         int number = 0;
         [DllImport("user32.dll ", EntryPoint = "SendMessage")]
@@ -37,78 +46,29 @@ namespace BLL
             [MarshalAs(UnmanagedType.LPStr)]
             public string lpData;//指向数据的指针
         }//消息中传递的结构体
-        public ClientManager(ChatListBox chatlistbox)
+        public ClientManager(ChatListBox chatlistbox, ChatListBox grouplistbox)
         {
-            CreateGroupUsers();
-            CreateTableUsers();
+            userManager = new UserManager();
+            groupManager = new GroupManager();
             udpclient = new UdpClient(port);
             chat = chatlistbox;
             listItem = new ChatListItem("我的好友");
             chat.Items.Add(listItem);
+
+            groupchat = grouplistbox;
+            grouplistItem = new ChatListItem("我的群组");
+            groupchat.Items.Add(grouplistItem);
+
             //AddItem();
             AddFriend();
-        }
-        public ClientManager()
-        {
-            CreateGroupUsers();
-            CreateTableUsers();
-        }
-        /// <summary>
-        /// 创建Users表
-        /// </summary>
-        private void CreateTableUsers()
-        {
-            ClientService.CreateTableUsers();
-            if (ClientService.GetUserByIP(Base.GetAddressIP()) == null)
-            {
-                User user = new User();
-                user.IP = Base.GetAddressIP();
-                user.Name = "Administrator";
-                Image img = Image.FromFile("head/4.png");
-                user.Picture = Base.ChangeToBytes(img);
-                user.Signature = " ";
-                user.Group = 0;
-                ClientService.InsertUser(user);
-            }
-        }
-        /// <summary>
-        /// 创建联系人分组表
-        /// </summary>
-        private void CreateGroupUsers()
-        {
-            UsersGroupService.CreateUsersGroup();
-            UsersGroup ug = new UsersGroup();
-            ug.GroupName = "我的好友";
-            if (!UsersGroupService.GetIDByUsersGroupName(ug.GroupName))
-            {
-                UsersGroupService.InsertUsersGroup(ug);
-            }
-        }
-        /// <summary>
-        /// 通过IP获取用户信息
-        /// </summary>
-        /// <param name="ip"></param>
-        /// <returns></returns>
-        public User GetUserByIP(string ip)
-        {
-            CreateGroupUsers();
-            CreateTableUsers();
-            return ClientService.GetUserByIP(ip);
-        }
-        /// <summary>
-        /// 更新个人资料
-        /// </summary>
-        /// <param name="user"></param>
-        public void UpdateUser(User user)
-        {
-            ClientService.UpdateUser(user);
+            AddGroup();
         }
         /// <summary>
         /// 添加好友
         /// </summary>
         private void AddFriend()
         {
-            List<User> userlist=ClientService.GetUsers();
+            List<User> userlist=userManager.GetUsers();
             if (userlist.Count > 0)
             {
                 for (int i = 0; i < userlist.Count; i++)
@@ -126,9 +86,22 @@ namespace BLL
                     listItem.SubItems.Sort();
                 }
             }
-            //chat.SendToBack();
         }
-
+        private void AddGroup()
+        {
+            List<Group> grouplist = groupManager.GetGroups();
+            if (grouplist.Count > 0)
+            {
+                for (int i = 0; i < grouplist.Count; i++)
+                {
+                    ChatListSubItem subItem = new ChatListSubItem(null, grouplist[i].GroupName, grouplist[i].GroupSignature);
+                    subItem.ID = (uint)grouplist[i].Id;
+                    subItem.HeadImage = Base.ChageToImage(grouplist[i].GroupPicture);
+                    grouplistItem.SubItems.AddAccordingToStatus(subItem);
+                    grouplistItem.SubItems.Sort();
+                }
+            }
+        }
         /// <summary>
         /// 接收数据
         /// </summary>
@@ -290,12 +263,12 @@ namespace BLL
                     if (listSubItem.Length > 0)
                     {
                         listItem.SubItems.Remove(listSubItem[0]);
-                        UpdateUser(user);
+                        userManager.UpdateUser(user);
                     }
                     else
                     {
                         user.Group = 0;
-                        ClientService.InsertUser(user);
+                        UserService.InsertUser(user);
                     }
                     listItem.SubItems.AddAccordingToStatus(subItem);
                     BoardCast bc = new BoardCast();
@@ -324,12 +297,12 @@ namespace BLL
                 if (listSubItem.Length > 0)
                 {
                     listItem.SubItems.Remove(listSubItem[0]);
-                    UpdateUser(user);
+                    userManager.UpdateUser(user);
                 }
                 else
                 {
                     user.Group = 0;
-                    ClientService.InsertUser(user);
+                    UserService.InsertUser(user);
                 }
                 listItem.SubItems.AddAccordingToStatus(subItem);
             }
@@ -341,7 +314,7 @@ namespace BLL
         private void SaveChatLog(object message)
         {
             ChatLog chatlog = Base.Decryption(message.ToString());
-            User user = ClientService.GetUserByIP(chatlog.Sender);
+            User user = UserService.GetUserByIP(chatlog.Sender);
             string windowsName = "与 " + user.Name + " 对话中";
             IntPtr handle = NativeMethods.FindWindow(null, windowsName);
 
@@ -404,7 +377,7 @@ namespace BLL
         public void SaveFile(object message)
         {
             ChatLog chatlog = Base.Decryption(message.ToString());
-            User user = ClientService.GetUserByIP(chatlog.Sender);
+            User user = UserService.GetUserByIP(chatlog.Sender);
             string windowsName = "与 " + user.Name + " 对话中";
             IntPtr handle = NativeMethods.FindWindow(null, windowsName);
 

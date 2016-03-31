@@ -13,10 +13,11 @@ using System.Windows.Forms;
 
 namespace Communication
 {
-    public partial class Chat : CCSkinMain
+    public partial class GroupChat : CCSkinMain
     {
         private string myselfIP;            //自己的IP
         private User user;
+        private Group group;
         ChatManager chatManager;
         UserManager userManager;
         bool b = false;                  //判断是否在读取数据库，是则不进行震动、文件传输等操作
@@ -32,34 +33,31 @@ namespace Communication
             [MarshalAs(UnmanagedType.LPStr)]
             public string lpData;//指向数据的指针
         }//消息中传递的结构体
-        public Chat()
+        public GroupChat()
         {
             InitializeComponent();
         }
-        public Chat(string ip)
+        public GroupChat(Group group)
         {
             InitializeComponent();
-            userManager = new UserManager();
-            this.user = userManager.GetUserByIP(ip);
-            myselfIP=Base.GetAddressIP();
-            chatManager = new ChatManager(myselfIP, ip);
+            this.group = group;
         }
 
-        private void Chat_Load(object sender, EventArgs e)
+        private void GroupChat_Load(object sender, EventArgs e)
         {
             PanelFile.Visible = false;
-            pictureicon.Image = Base.ChageToImage(user.Picture);
-            lName.Text = user.Name;
-            if (user.Signature.Length > 35)
+            pictureicon.Image = Base.ChageToImage(group.GroupPicture);
+            lName.Text = group.GroupName;
+            if (group.GroupSignature.Length > 35)
             {
-                lSignature.Text = user.Signature.Substring(0, 35) + "...";
-                tipSignature.SetToolTip(lSignature, user.Signature);
+                lSignature.Text = group.GroupSignature.Substring(0, 35) + "...";
+                tipSignature.SetToolTip(lSignature, group.GroupSignature);
             }
             else
-                lSignature.Text = user.Signature;
-            Thread TGetChatlogs = new Thread(GetChatlogs);
-            TGetChatlogs.IsBackground = true;
-            TGetChatlogs.Start();
+                lSignature.Text = group.GroupSignature;
+            //Thread TGetChatlogs = new Thread(GetChatlogs);
+            //TGetChatlogs.IsBackground = true;
+            //TGetChatlogs.Start();
         }
         /// <summary>
         /// 获取聊天记录

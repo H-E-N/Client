@@ -52,6 +52,7 @@
     <Compile Include="BoardCast.cs" />
     <Compile Include="ChatManager.cs" />
     <Compile Include="ClientManager.cs" />
+    <Compile Include="GroupManager.cs" />
     <Compile Include="Information.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -60,6 +61,7 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="FileManager.cs" />
+    <Compile Include="UserManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DAL\DAL.csproj">

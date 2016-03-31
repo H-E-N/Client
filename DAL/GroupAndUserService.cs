@@ -15,7 +15,7 @@ namespace DAL
             string creatTable = "CREATE TABLE IF NOT EXISTS GroupAndUser(id INTEGER PRIMARY KEY AUTOINCREMENT, GroupID int, UserIP varchar(20));";//建表语句
             return SqliteHelper.ExecuteNonQuery(CommandType.Text, creatTable, null);
         }
-        public static void InsertGroup(GroupAndUser groupAndUser)
+        public static void InsertGroupAndUser(GroupAndUser groupAndUser)
         {
             string sql = "Insert into GroupAndUser(GroupID,UserIP) values(@GroupID,@UserIP)";
             SQLiteParameter[] paras ={

@@ -30,10 +30,28 @@ namespace Communication
         }
 
         Chat chat;
+        GroupChat groupchat;
         public Countenance(Chat frm)
         {
             InitializeComponent();
             this.chat = frm;
+            SetStyles();
+            // Window Style
+            this.FormBorderStyle = FormBorderStyle.None;
+            this.WindowState = FormWindowState.Minimized;
+            //this.Show();
+            this.Hide();
+            this.WindowState = FormWindowState.Normal;
+            this.ShowInTaskbar = false;
+            this.TopMost = true;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.ControlBox = false;
+        }
+        public Countenance(GroupChat frm)
+        {
+            InitializeComponent();
+            this.groupchat = frm;
             SetStyles();
             // Window Style
             this.FormBorderStyle = FormBorderStyle.None;

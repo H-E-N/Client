@@ -19,8 +19,8 @@ namespace BLL
         {
             user = new User();
             user.IP = Base.GetAddressIP();
-            ClientManager clientManager = new ClientManager();
-            user = clientManager.GetUserByIP(user.IP);
+            UserManager userManager = new UserManager();
+            user = userManager.GetUserByIP(user.IP);
         }
         /// <summary>
         /// 收到上线通知后的回复

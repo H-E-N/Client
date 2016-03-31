@@ -34,12 +34,15 @@
             this.TabClient = new CCWin.SkinControl.SkinTabControl();
             this.tabContacts = new CCWin.SkinControl.SkinTabPage();
             this.chatshow = new CCWin.SkinControl.ChatListBox();
-            this.rightMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.userrightMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.头像显示ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ItemLargeIcon = new System.Windows.Forms.ToolStripMenuItem();
             this.ItemSmallIcon = new System.Windows.Forms.ToolStripMenuItem();
             this.ItemFlush = new System.Windows.Forms.ToolStripMenuItem();
             this.tabGroup = new CCWin.SkinControl.SkinTabPage();
+            this.chatGroupshow = new CCWin.SkinControl.ChatListBox();
+            this.grouprightMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.ItemAddGroup = new System.Windows.Forms.ToolStripMenuItem();
             this.lName = new System.Windows.Forms.Label();
             this.lIP = new System.Windows.Forms.Label();
             this.btnSet = new CCWin.SkinControl.SkinButton();
@@ -54,7 +57,9 @@
             this.panel2.SuspendLayout();
             this.TabClient.SuspendLayout();
             this.tabContacts.SuspendLayout();
-            this.rightMenu.SuspendLayout();
+            this.userrightMenu.SuspendLayout();
+            this.tabGroup.SuspendLayout();
+            this.grouprightMenu.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureIcon)).BeginInit();
             this.minMenu.SuspendLayout();
@@ -66,7 +71,7 @@
             this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel2.Location = new System.Drawing.Point(4, 157);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(253, 436);
+            this.panel2.Size = new System.Drawing.Size(247, 436);
             this.panel2.TabIndex = 1;
             // 
             // TabClient
@@ -89,8 +94,8 @@
             this.TabClient.PageHover = ((System.Drawing.Image)(resources.GetObject("TabClient.PageHover")));
             this.TabClient.PageImagePosition = CCWin.SkinControl.SkinTabControl.ePageImagePosition.Left;
             this.TabClient.PageNorml = null;
-            this.TabClient.SelectedIndex = 0;
-            this.TabClient.Size = new System.Drawing.Size(253, 436);
+            this.TabClient.SelectedIndex = 1;
+            this.TabClient.Size = new System.Drawing.Size(247, 436);
             this.TabClient.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.TabClient.TabIndex = 1;
             // 
@@ -101,7 +106,7 @@
             this.tabContacts.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabContacts.Location = new System.Drawing.Point(0, 36);
             this.tabContacts.Name = "tabContacts";
-            this.tabContacts.Size = new System.Drawing.Size(253, 400);
+            this.tabContacts.Size = new System.Drawing.Size(320, 400);
             this.tabContacts.TabIndex = 0;
             this.tabContacts.TabItemImage = null;
             this.tabContacts.Text = "联系人";
@@ -109,7 +114,7 @@
             // chatshow
             // 
             this.chatshow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.chatshow.ContextMenuStrip = this.rightMenu;
+            this.chatshow.ContextMenuStrip = this.userrightMenu;
             this.chatshow.Dock = System.Windows.Forms.DockStyle.Fill;
             this.chatshow.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.chatshow.ForeColor = System.Drawing.Color.Black;
@@ -118,19 +123,19 @@
             this.chatshow.Location = new System.Drawing.Point(0, 0);
             this.chatshow.Name = "chatshow";
             this.chatshow.SelectSubItem = null;
-            this.chatshow.Size = new System.Drawing.Size(253, 400);
+            this.chatshow.Size = new System.Drawing.Size(320, 400);
             this.chatshow.SubItemMenu = null;
             this.chatshow.TabIndex = 0;
             this.chatshow.Text = "chatListBox1";
             this.chatshow.DoubleClickSubItem += new CCWin.SkinControl.ChatListBox.ChatListEventHandler(this.chatshow_DoubleClickSubItem);
             // 
-            // rightMenu
+            // userrightMenu
             // 
-            this.rightMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.userrightMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.头像显示ToolStripMenuItem,
             this.ItemFlush});
-            this.rightMenu.Name = "rightMenu";
-            this.rightMenu.Size = new System.Drawing.Size(149, 48);
+            this.userrightMenu.Name = "rightMenu";
+            this.userrightMenu.Size = new System.Drawing.Size(149, 48);
             // 
             // 头像显示ToolStripMenuItem
             // 
@@ -166,13 +171,45 @@
             // tabGroup
             // 
             this.tabGroup.BackColor = System.Drawing.Color.White;
+            this.tabGroup.Controls.Add(this.chatGroupshow);
             this.tabGroup.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabGroup.Location = new System.Drawing.Point(0, 36);
             this.tabGroup.Name = "tabGroup";
-            this.tabGroup.Size = new System.Drawing.Size(259, 400);
+            this.tabGroup.Size = new System.Drawing.Size(247, 400);
             this.tabGroup.TabIndex = 1;
             this.tabGroup.TabItemImage = null;
             this.tabGroup.Text = "群组";
+            // 
+            // chatGroupshow
+            // 
+            this.chatGroupshow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.chatGroupshow.ContextMenuStrip = this.grouprightMenu;
+            this.chatGroupshow.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.chatGroupshow.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.chatGroupshow.ForeColor = System.Drawing.Color.Black;
+            this.chatGroupshow.FriendsMobile = true;
+            this.chatGroupshow.ListSubItemMenu = null;
+            this.chatGroupshow.Location = new System.Drawing.Point(0, 0);
+            this.chatGroupshow.Name = "chatGroupshow";
+            this.chatGroupshow.SelectSubItem = null;
+            this.chatGroupshow.Size = new System.Drawing.Size(247, 400);
+            this.chatGroupshow.SubItemMenu = null;
+            this.chatGroupshow.TabIndex = 0;
+            this.chatGroupshow.DoubleClickSubItem += new CCWin.SkinControl.ChatListBox.ChatListEventHandler(this.chatGroupshow_DoubleClickSubItem);
+            // 
+            // grouprightMenu
+            // 
+            this.grouprightMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ItemAddGroup});
+            this.grouprightMenu.Name = "grouprightMenu";
+            this.grouprightMenu.Size = new System.Drawing.Size(125, 26);
+            // 
+            // ItemAddGroup
+            // 
+            this.ItemAddGroup.Name = "ItemAddGroup";
+            this.ItemAddGroup.Size = new System.Drawing.Size(124, 22);
+            this.ItemAddGroup.Text = "添加群组";
+            this.ItemAddGroup.Click += new System.EventHandler(this.ItemAddGroup_Click);
             // 
             // lName
             // 
@@ -217,7 +254,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(4, 28);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(253, 155);
+            this.panel1.Size = new System.Drawing.Size(247, 155);
             this.panel1.TabIndex = 0;
             // 
             // lSignature
@@ -272,7 +309,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
-            this.ClientSize = new System.Drawing.Size(278, 597);
+            this.ClientSize = new System.Drawing.Size(272, 597);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -286,7 +323,9 @@
             this.panel2.ResumeLayout(false);
             this.TabClient.ResumeLayout(false);
             this.tabContacts.ResumeLayout(false);
-            this.rightMenu.ResumeLayout(false);
+            this.userrightMenu.ResumeLayout(false);
+            this.tabGroup.ResumeLayout(false);
+            this.grouprightMenu.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureIcon)).EndInit();
@@ -313,10 +352,13 @@
         private System.Windows.Forms.ToolStripMenuItem 退出ToolStripMenuItem;
         private System.Windows.Forms.Label lSignature;
         private System.Windows.Forms.ToolTip TipSignature;
-        private System.Windows.Forms.ContextMenuStrip rightMenu;
+        private System.Windows.Forms.ContextMenuStrip userrightMenu;
         private System.Windows.Forms.ToolStripMenuItem 头像显示ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ItemLargeIcon;
         private System.Windows.Forms.ToolStripMenuItem ItemSmallIcon;
         private System.Windows.Forms.ToolStripMenuItem ItemFlush;
+        private CCWin.SkinControl.ChatListBox chatGroupshow;
+        private System.Windows.Forms.ContextMenuStrip grouprightMenu;
+        private System.Windows.Forms.ToolStripMenuItem ItemAddGroup;
     }
 }

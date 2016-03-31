@@ -21,19 +21,20 @@ namespace Model
             get { return groupName; }
             set { groupName = value; }
         }
-        private byte[] roupPicture;
+        private byte[] groupPicture;
 
-        public byte[] RoupPicture
+        public byte[] GroupPicture
         {
-            get { return roupPicture; }
-            set { roupPicture = value; }
+            get { return groupPicture; }
+            set { groupPicture = value; }
         }
-        private string groupSignaure;
 
-        public string GroupSignaure
+        private string groupSignature;
+
+        public string GroupSignature
         {
-            get { return groupSignaure; }
-            set { groupSignaure = value; }
+            get { return groupSignature; }
+            set { groupSignature = value; }
         }
         private int group;
 

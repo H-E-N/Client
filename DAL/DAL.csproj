@@ -46,7 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ChatLogService.cs" />
-    <Compile Include="ClientService.cs" />
+    <Compile Include="UserService.cs" />
     <Compile Include="GroupAndUserService.cs" />
     <Compile Include="GroupDataService.cs" />
     <Compile Include="GroupService.cs" />

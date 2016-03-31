@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DAL
 {
-    static public class ClientService
+    static public class UserService
     {
         /// <summary>
         /// 创建用户表

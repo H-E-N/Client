@@ -16,7 +16,7 @@ namespace Communication
     public partial class Setting : CCSkinMain
     {
         User user=new User();
-        ClientManager clientManger = new ClientManager();
+        UserManager userManager = new UserManager();
         public Setting()
         {
             InitializeComponent();
@@ -29,7 +29,7 @@ namespace Communication
 
         private void Setting_Load(object sender, EventArgs e)
         {
-            user = clientManger.GetUserByIP(user.IP);
+            user = userManager.GetUserByIP(user.IP);
             pictureIcon.Image = Base.ChageToImage(user.Picture);
             txtName.Text = user.Name;
             txtSignature.Text = user.Signature;
@@ -63,7 +63,7 @@ namespace Communication
             user.Name = txtName.Text;
             user.Signature = txtSignature.Text;
             user.Picture = Base.ChangeToBytes(pictureIcon.Image);
-            clientManger.UpdateUser(user);
+            userManager.UpdateUser(user);
             this.Close();
         }
 
